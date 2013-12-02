@@ -1,0 +1,6 @@
+mongoimport --port 29009 --db geodb --collection zips --file C:\UserData\Docs\JUGs\TwinCities\zips.json
+
+mongoimport --stopOnError --port 29009 --db geo --collection geos --file C:\UserData\Docs\JUGs\TwinCities\zips.json
+
+
+

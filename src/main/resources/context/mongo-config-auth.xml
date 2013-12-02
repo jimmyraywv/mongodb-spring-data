@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/data/mongo
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Default bean name is 'mongo' -->
+	<bean class="com.mongodb.MongoURI" id="mongoURI">
+		<constructor-arg value="${mongodb.uri}" />
+	</bean>
+
+	<bean id="mongo" class="com.mongodb.Mongo">
+		<constructor-arg ref="mongoURI" />
+	</bean>
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongo" />
+		<constructor-arg name="databaseName" value="${mongodb.db}" />
+		<constructor-arg name="userCredentials" ref="mongoCreds" />
+	</bean>
+
+	<bean id="mongoCreds" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="#{mongoURI.username}" />
+		<constructor-arg name="password"
+			value="#{new java.lang.String(mongoURI.password)}" />
+	</bean>
+
+	<mongo:repositories base-package="org.jimmyray.mongo.data.repository">
+		<mongo:repository id="customerRepository"
+			mongo-template-ref="mongoTemplate" />
+		<mongo:repository id="customerAddressRepository"
+			mongo-template-ref="mongoTemplate" />
+		<mongo:repository id="employeeRepository"
+			mongo-template-ref="mongoTemplate" />
+		<mongo:repository id="jobDescriptionRepository"
+			mongo-template-ref="mongoTemplate" />
+	</mongo:repositories>
+
+	<bean id="gridfsDb" factory-bean="mongoTemplate" factory-method="getDb" />
+
+	<!-- To translate any MongoExceptions thrown in @Repository annotated classes -->
+	<context:annotation-config />
+</beans>

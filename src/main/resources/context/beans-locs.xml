@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan base-package="org.jimmyray.mongo" />
+
+	<bean id="locationService" class="org.jimmyray.mongo.services.LocationServiceImpl"
+		init-method="init">
+		<property name="locationRepository" ref="locationRepository" />
+		<property name="mongo" ref="mongo" />
+		<property name="mongoOps" ref="mongoTemplate" />
+	</bean>
+
+	<bean name="SpringBeanFactory" class="org.jimmyray.mongo.framework.SpringBeanFactory" />
+</beans>

@@ -1,0 +1,9 @@
+*.class
+*.log*
+.settings
+.classpath
+.project
+target
+creds.properties
+.svn
+
