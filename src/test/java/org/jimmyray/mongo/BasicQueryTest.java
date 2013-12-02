@@ -10,6 +10,7 @@ import java.util.List;
 import org.jimmyray.mongo.data.loaders.EmployeeLoader;
 import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.data.model.properties.EmployeeProperties;
+import org.jimmyray.mongo.framework.Properties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,8 +41,10 @@ public class BasicQueryTest {
 
 	@Before
 	public void setup() {
-		ctx = new GenericXmlApplicationContext("context/main-auth.xml");
-		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
+		ctx = new GenericXmlApplicationContext(
+				Properties.getString("springMongoConfig.path.configFile.hq"));
+		mongoOps = (MongoOperations) ctx.getBean(Properties
+				.getString("springMongoConfig.bean.mongoTemplate"));
 	}
 
 	@Test
