@@ -22,5 +22,5 @@
 	</bean>
 
 	<import resource="mongo-config-hq.xml" />
-	<import resource="beans.xml" />
+	<import resource="beans-hq.xml" />
 </beans>	

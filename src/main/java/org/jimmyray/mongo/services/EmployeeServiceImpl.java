@@ -7,7 +7,6 @@ import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.data.model.properties.EmployeeProperties;
 import org.jimmyray.mongo.data.repository.EmployeeRepository;
 import org.jimmyray.mongo.data.transformers.EmployeeTransformer;
-import org.jimmyray.mongo.framework.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -33,10 +32,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeRepository employeeRepository;
 	private Mongo mongo;
 	private DB db;
+	private String dbName;
 
 	public void init() {
 		if (mongo != null) {
-			db = mongo.getDB(Properties.getString("mongodb.db"));
+			db = mongo.getDB(this.dbName);
 		}
 	}
 
@@ -95,17 +95,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		this.employeeRepository.deleteAll();
 	}
 
-	public void setEmployeeRepository(EmployeeRepository employeeRepository) {
-		this.employeeRepository = employeeRepository;
-	}
-
-	public void setMongo(Mongo mongo) {
-		this.mongo = mongo;
-	}
-
 	@Override
 	public void bulkInsert(List<Employee> employees, int batchSize) {
-		DBCollection collection = db
+		DBCollection collection = this.db
 				.getCollection(EmployeeProperties.COLLECTION);
 		List<DBObject> docs = new ArrayList<DBObject>();
 		EmployeeTransformer transformer = new EmployeeTransformer();
@@ -119,7 +111,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 			if (insertCounter == batchSize) {
 				result = collection.insert(docs);
-				log.info(result.getError());
+				if (log.isDebugEnabled()) {
+					if (result.getError() != null) {
+						log.debug(result.getError());
+					} else {
+						log.debug(result.toString());
+					}
+				}
+
 				insertCounter = 0;
 				docs = new ArrayList<DBObject>();
 			}
@@ -129,5 +128,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (insertCounter > 0 && !docs.isEmpty()) {
 			collection.insert(docs);
 		}
+	}
+
+	public String getDbName() {
+		return dbName;
+	}
+
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
+
+	public void setEmployeeRepository(EmployeeRepository employeeRepository) {
+		this.employeeRepository = employeeRepository;
+	}
+
+	public void setMongo(Mongo mongo) {
+		this.mongo = mongo;
 	}
 }

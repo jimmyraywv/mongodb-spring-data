@@ -10,6 +10,7 @@
 		init-method="init">
 		<property name="employeeRepository" ref="employeeRepository" />
 		<property name="mongo" ref="mongo" />
+		<property name="dbName" value="${mongodb.db}"/>
 	</bean>
 
 	<bean name="SpringBeanFactory" class="org.jimmyray.mongo.framework.SpringBeanFactory" />

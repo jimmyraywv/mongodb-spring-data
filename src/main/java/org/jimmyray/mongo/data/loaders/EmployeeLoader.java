@@ -36,7 +36,7 @@ public final class EmployeeLoader {
 				.getString("springMongoConfig.msg.startingContainer")); //$NON-NLS-1$
 
 		ApplicationContext ctx = new GenericXmlApplicationContext(
-				Properties.getString("springMongoConfig.path.configFile.hq")); //$NON-NLS-1$
+				Properties.getString("springMongoConfig.path.configFile.auth")); //$NON-NLS-1$
 
 		EmployeeService employeeService = (EmployeeService) ctx
 				.getBean(Properties

@@ -40,7 +40,7 @@ public class BasicQueryTest {
 
 	@Before
 	public void setup() {
-		ctx = new GenericXmlApplicationContext("context/main-hq.xml");
+		ctx = new GenericXmlApplicationContext("context/main-auth.xml");
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
 	}
 
@@ -87,7 +87,7 @@ public class BasicQueryTest {
 
 		while (cursor.hasNext()) {
 			DBObject dbo = cursor.next();
-			// log.info(dbo.toString());
+			log.debug(dbo.toString());
 			assertEquals("Keyset size incorrect.", 1, dbo.keySet().size());
 		}
 	}
@@ -105,9 +105,11 @@ public class BasicQueryTest {
 		assertTrue("Employees is empty.", !employees.isEmpty());
 		assertEquals("Employee count was incorrect.", 97748, employees.size());
 
-		// for (Employee emp : employees) {
-		// log.info(emp.toString());
-		// }
+		if (log.isDebugEnabled()) {
+			for (Employee emp : employees) {
+				log.debug(emp.toString());
+			}
+		}
 	}
 
 	@Test
@@ -138,7 +140,7 @@ public class BasicQueryTest {
 
 		while (cursor.hasNext()) {
 			DBObject dbo = cursor.next();
-			// log.info(dbo.toString());
+			log.debug(dbo.toString());
 			assertEquals("Keyset size not equal to 2.", 2, dbo.keySet().size());
 		}
 	}
@@ -172,7 +174,7 @@ public class BasicQueryTest {
 
 		while (cursor.hasNext()) {
 			DBObject dbo = cursor.next();
-			// log.info(dbo.toString());
+			log.debug(dbo.toString());
 			assertEquals("Keyset size not equal to 2.", 2, dbo.keySet().size());
 		}
 
@@ -203,7 +205,7 @@ public class BasicQueryTest {
 
 		while (cursor.hasNext()) {
 			DBObject dbo = cursor.next();
-			// log.info(dbo.toString());
+			log.debug(dbo.toString());
 			assertEquals("Keyset size not equal to 2.", 2, dbo.keySet().size());
 		}
 	}
@@ -241,7 +243,7 @@ public class BasicQueryTest {
 
 		while (cursor.hasNext()) {
 			DBObject dbo = cursor.next();
-			// log.info(dbo.toString());
+			log.debug(dbo.toString());
 			assertEquals("Keyset size not equal to 2.", 2, dbo.keySet().size());
 		}
 
