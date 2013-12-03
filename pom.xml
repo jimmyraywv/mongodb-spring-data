@@ -43,13 +43,13 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>3.2.1.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<!-- Spring AOP + AspectJ -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>3.2.1.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -129,5 +129,6 @@
 	</dependencies>
 	<properties>
 		<test>org.jimmyray.mongo.ADummyTest</test>
+		<spring.version>3.2.1.RELEASE</spring.version>
 	</properties>
 </project>
