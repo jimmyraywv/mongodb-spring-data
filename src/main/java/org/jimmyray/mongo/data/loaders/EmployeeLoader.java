@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.framework.Properties;
+import org.jimmyray.mongo.framework.SpringBeanFactory;
 import org.jimmyray.mongo.services.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
 
 /**
  * Loads data into MongoDB.
@@ -28,17 +28,16 @@ public final class EmployeeLoader {
 	}
 
 	public static void loadEmployees() {
-		EmployeeLoader.loadEmployees(false, 0);
+		log.debug(Properties
+				.getString("springMongoConfig.msg.startingContainer")); //$NON-NLS-1$
+		SpringBeanFactory.initContext();
+		EmployeeLoader.loadEmployees(SpringBeanFactory.getContext(), false, 0);
 	}
 
-	public static void loadEmployees(boolean batchInsert, int batchSize) {
-		log.info(Properties
-				.getString("springMongoConfig.msg.startingContainer")); //$NON-NLS-1$
+	public static void loadEmployees(ApplicationContext ctx,
+			boolean batchInsert, int batchSize) {
 
-		ApplicationContext ctx = new GenericXmlApplicationContext(
-				Properties.getString("springMongoConfig.path.configFile.hq")); //$NON-NLS-1$
-
-		EmployeeService employeeService = (EmployeeService) ctx
+		EmployeeService employeeService = (EmployeeService) SpringBeanFactory
 				.getBean(Properties
 						.getString("springMongoConfig.bean.employeeService")); //$NON-NLS-1$
 

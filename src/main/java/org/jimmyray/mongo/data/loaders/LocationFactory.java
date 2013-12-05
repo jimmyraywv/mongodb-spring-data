@@ -14,12 +14,11 @@ import org.jimmyray.mongo.framework.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * A factory for creating Location objects.
  */
 public final class LocationFactory {
-	
+
 	/** The log. */
 	private static Logger log = LoggerFactory.getLogger(LocationFactory.class);
 
@@ -36,8 +35,9 @@ public final class LocationFactory {
 
 	/**
 	 * The main method.
-	 *
-	 * @param args the arguments
+	 * 
+	 * @param args
+	 *            the arguments
 	 */
 	public static void main(String[] args) {
 		loadData();
@@ -45,7 +45,7 @@ public final class LocationFactory {
 
 	/**
 	 * Load data.
-	 *
+	 * 
 	 * @return the list
 	 */
 	public static List<Location> loadData() {
@@ -53,8 +53,13 @@ public final class LocationFactory {
 
 		try {
 			Filer filer = new Filer();
-			List<String> lines = filer.readFile(Properties
+
+			List<String> lines = filer.readFileAsResource(Properties
 					.getString("locationFactory.path.locationData")); //$NON-NLS-1$
+
+			if (lines.size() == 0) {
+				log.debug("No Locations Found");
+			}
 
 			for (String line : lines) {
 				Location location = new Location();
@@ -73,6 +78,7 @@ public final class LocationFactory {
 				location.setDstObserved(Strings.parseBoolean(scanner.next()));
 
 				locations.add(location);
+				//log.debug(location.toString());
 			}
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage());
@@ -83,8 +89,9 @@ public final class LocationFactory {
 
 	/**
 	 * Gets the map.
-	 *
-	 * @param location the location
+	 * 
+	 * @param location
+	 *            the location
 	 * @return the map
 	 */
 	public static Map<String, Object> getMap(Location location) {

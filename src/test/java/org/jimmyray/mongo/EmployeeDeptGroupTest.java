@@ -40,7 +40,7 @@ public class EmployeeDeptGroupTest {
 				SpringMongoConfig.class);
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
 
-		EmployeeLoader.loadEmployees(true, 50000);
+		EmployeeLoader.loadEmployees(ctx, true, 50000);
 	}
 
 	@Test

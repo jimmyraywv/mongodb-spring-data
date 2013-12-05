@@ -27,22 +27,24 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+//JVM Settings -Xmx512M -Dspring.profiles.active=local
 public class BasicQueryTest {
 	private static Logger log = LoggerFactory.getLogger(BasicQueryTest.class);
 
 	private static boolean cleanFlag = false;
 
-	private ApplicationContext ctx;
+	private static ApplicationContext ctx;
 	private MongoOperations mongoOps;
 
 	static {
-		EmployeeLoader.loadEmployees(true, 10000);
+		ctx = new GenericXmlApplicationContext(
+				Properties.getString("springMongoConfig.path.configFile"));
+
+		EmployeeLoader.loadEmployees(ctx, true, 10000);
 	}
 
 	@Before
 	public void setup() {
-		ctx = new GenericXmlApplicationContext(
-				Properties.getString("springMongoConfig.path.configFile.hq"));
 		mongoOps = (MongoOperations) ctx.getBean(Properties
 				.getString("springMongoConfig.bean.mongoTemplate"));
 	}

@@ -1,32 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-          http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-	<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl" init-method="init">
-		<property name="employeeRepository" ref="employeeRepository" />
-		<property name="mongo" ref="mongo" />
-		<property name="dbName" value="${mongodb.db}"/>
-	</bean>
+	<context:component-scan base-package="org.jimmyray.mongo" />
 
-	<bean name="SpringBeanFactory" class="org.jimmyray.mongo.framework.SpringBeanFactory" />
+	<!-- ||||||||| auth,local profiles ||||||||| -->
+	<beans profile="auth,local">
+		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
+			init-method="init">
+			<property name="employeeRepository" ref="employeeRepository" />
+			<property name="mongo" ref="mongo" />
+			<property name="dbName" value="${mongodb.db}" />
+		</bean>
+	</beans>
 
-	<bean id="customerService" class="org.jimmyray.mongo.services.CustomerServiceImpl">
-		<property name="customerRepository" ref="customerRepository" />
-	</bean>
+	<!-- ||||||||| hq profile ||||||||| -->
+	<beans profile="hq">
+		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
+			init-method="init">
+			<property name="employeeRepository" ref="employeeRepository" />
+			<property name="mongo" ref="mongo" />
+			<property name="dbName" value="${mongohq.db}" />
+		</bean>
+	</beans>
 
-	<bean id="customerAddressService" class="org.jimmyray.mongo.services.CustomerAddressServiceImpl">
-		<property name="customerAddressRepository" ref="customerAddressRepository" />
-	</bean>
+	<!-- ||||||||| hqcb profile ||||||||| -->
+	<beans profile="hqcb">
+		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
+			init-method="init">
+			<property name="employeeRepository" ref="employeeRepository" />
+			<property name="mongo" ref="mongo" />
+			<property name="dbName" value="${mongohq.cb.db}" />
+		</bean>
+	</beans>
 
-	<bean id="jobDescriptionService" class="org.jimmyray.mongo.services.JobDescriptionServiceImpl">
-		<property name="jobDescriptionRepository" ref="jobDescriptionRepository" />
-	</bean>
+	<!-- ||||||||| lab profile ||||||||| -->
+	<beans profile="lab">
+		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
+			init-method="init">
+			<property name="employeeRepository" ref="employeeRepository" />
+			<property name="mongo" ref="mongo" />
+			<property name="dbName" value="${mongolab.db}" />
+		</bean>
+	</beans>
 
-	<bean id="fileStorageService" class="org.jimmyray.mongo.services.FileStorageServiceImpl">
-		<constructor-arg index="0" name="db" ref="gridfsDb" />
-	</bean>
+	<!-- ||||||||| location profile ||||||||| -->
+	<beans profile="location">
+		<bean id="locationService" class="org.jimmyray.mongo.services.LocationServiceImpl"
+			init-method="init">
+			<property name="locationRepository" ref="locationRepository" />
+			<property name="mongo" ref="mongo" />
+			<property name="mongoOps" ref="mongoTemplate" />
+			<property name="dbName" value="${mongodb.db.locs}" />
+		</bean>
+	</beans>
+	
+		<!-- ||||||||| geo profile ||||||||| -->
+	<beans profile="geo">
+		<bean id="locationService" class="org.jimmyray.mongo.services.LocationServiceImpl"
+			init-method="init">
+			<property name="locationRepository" ref="locationRepository" />
+			<property name="mongo" ref="mongo" />
+			<property name="mongoOps" ref="mongoTemplate" />
+			<property name="dbName" value="${mongodb.db.geo}" />
+		</bean>
+	</beans>
+
+	<!-- ||||||||| common ||||||||| -->
+	<beans profile="auth,local,hq,hqcb,lab">
+		<bean name="SpringBeanFactory" class="org.jimmyray.mongo.framework.SpringBeanFactory" />
+
+		<bean id="customerService" class="org.jimmyray.mongo.services.CustomerServiceImpl">
+			<property name="customerRepository" ref="customerRepository" />
+		</bean>
+
+		<bean id="customerAddressService" class="org.jimmyray.mongo.services.CustomerAddressServiceImpl">
+			<property name="customerAddressRepository" ref="customerAddressRepository" />
+		</bean>
+
+		<bean id="jobDescriptionService" class="org.jimmyray.mongo.services.JobDescriptionServiceImpl">
+			<property name="jobDescriptionRepository" ref="jobDescriptionRepository" />
+		</bean>
+
+		<bean id="fileStorageService" class="org.jimmyray.mongo.services.FileStorageServiceImpl">
+			<constructor-arg index="0" name="db" ref="gridfsDb" />
+		</bean>
+	</beans>
+
 </beans>

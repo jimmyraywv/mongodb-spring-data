@@ -32,7 +32,8 @@ public class InNinQueryTest {
 	public void setUp() throws Exception {
 		SpringBeanFactory.initContext();
 		mongoOps = (MongoOperations) SpringBeanFactory.getBean("mongoTemplate");
-		EmployeeLoader.loadEmployees(true, 50000);
+		EmployeeLoader.loadEmployees(SpringBeanFactory.getContext(), true,
+				50000);
 	}
 
 	@Test
@@ -59,26 +60,28 @@ public class InNinQueryTest {
 		assertNotNull("cursor was null.", cursor);
 		assertEquals("cursor count was not correct.", 299618, cursor.count());
 	}
-	
+
 	@Test
 	public void testInSpringData() {
 		List<String> names = new ArrayList<String>();
 		names.add("Baby");
 		names.add("Chenney");
-		
+
 		Query query = new Query();
-		query.addCriteria(Criteria.where(EmployeeProperties.LAST_NAME).in(names));
-		
+		query.addCriteria(Criteria.where(EmployeeProperties.LAST_NAME)
+				.in(names));
+
 		List<Employee> list = this.mongoOps.find(query, Employee.class);
 
 		assertNotNull("List was null.", list);
 		assertEquals("List count was incorrect", 406, list.size());
-		
+
 		query = new Query();
-		query.addCriteria(Criteria.where(EmployeeProperties.LAST_NAME).nin(names));
+		query.addCriteria(Criteria.where(EmployeeProperties.LAST_NAME).nin(
+				names));
 
 		list = this.mongoOps.find(query, Employee.class);
-		
+
 		assertNotNull("List was null.", list);
 		assertEquals("List count was incorrect", 299618, list.size());
 	}

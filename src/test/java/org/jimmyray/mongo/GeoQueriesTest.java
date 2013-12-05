@@ -21,6 +21,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
+//JVM Settings -Xmx512M -Dspring.profiles.active=geo
 public class GeoQueriesTest {
 	private static Logger log = LoggerFactory.getLogger(GeoQueriesTest.class);
 
@@ -31,7 +32,7 @@ public class GeoQueriesTest {
 
 	@Before
 	public void setup() {
-		ctx = new GenericXmlApplicationContext("context/main-geo.xml");
+		ctx = new GenericXmlApplicationContext("context/main.xml");
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
 		mongo = (Mongo) ctx.getBean("mongo");
 	}

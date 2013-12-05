@@ -38,6 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (mongo != null) {
 			db = mongo.getDB(this.dbName);
 		}
+		log.debug("Employee Service INIT");
 	}
 
 	public Employee saveEmployee(Employee employee) {

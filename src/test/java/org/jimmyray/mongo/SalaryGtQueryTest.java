@@ -33,7 +33,8 @@ public class SalaryGtQueryTest {
 		SpringBeanFactory.initContext();
 		mongoOps = (MongoOperations) SpringBeanFactory.getBean("mongoTemplate");
 
-		EmployeeLoader.loadEmployees(true, 50000);
+		EmployeeLoader.loadEmployees(SpringBeanFactory.getContext(), true,
+				50000);
 	}
 
 	@Test

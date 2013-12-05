@@ -27,7 +27,7 @@ public final class LocationLoader {
 
 	public static void main(String[] args) {
 		ApplicationContext ctx = new GenericXmlApplicationContext(
-				"context/main-locs.xml");
+				"context/main.xml");
 
 		LocationService locationService = (LocationService) ctx
 				.getBean("locationService");

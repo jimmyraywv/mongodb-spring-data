@@ -27,6 +27,8 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
+
+//JVM Settings -Xmx512M -Dspring.profiles.active=location
 public class LocationQueryTest {
 	private static Logger log = LoggerFactory
 			.getLogger(LocationQueryTest.class);
@@ -39,7 +41,7 @@ public class LocationQueryTest {
 
 	@Before
 	public void setup() {
-		ctx = new GenericXmlApplicationContext("context/main-locs.xml");
+		ctx = new GenericXmlApplicationContext("context/main.xml");
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
 		mongo = (Mongo) ctx.getBean("mongo");
 		this.locationService = (LocationService) ctx.getBean("locationService");
@@ -53,15 +55,17 @@ public class LocationQueryTest {
 	 */
 	@Test
 	public void testLocationCircleQuery() {
-		log.info("<<<<<<<<<<<<<<<<<  testLocationCircleQuery  >>>>>>>>>>>>>>>>>>>>");
-
-		List<Location> locations = locationService.findByCityAndState(
-				"Wheeling", "WV");
+		log.debug("<<<<<<<<<<<<<<<<<  testLocationCircleQuery  >>>>>>>>>>>>>>>>>>>>");
 
 		/*
-		 * List<Location> locations = locationService
-		 * .findByCityAndStateAndZipCode("Wheeling", "WV", "26003");
+		 * List<Location> locations = locationService.findByCityAndState(
+		 * "Wheeling", "WV");
 		 */
+
+		List<Location> locations = locationService
+				.findByCityAndStateAndZipCode("Wheeling", "WV", "26003");
+
+		log.debug("List Size:  " + locations.size());
 
 		assertNotNull("locations[0] was null.", locations.get(0));
 
@@ -113,7 +117,7 @@ public class LocationQueryTest {
 	@Test
 	public void testNear() {
 		log.info("<<<<<<<<<<<<<<<<<  testNear  >>>>>>>>>>>>>>>>>>>>");
-		DB db = mongo.getDB(Properties.getString("mongodb.db"));
+		DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
 		mongoOps.getCollection("locations").ensureIndex(index);
@@ -154,7 +158,7 @@ public class LocationQueryTest {
 	public void testNearMiles() {
 		log.info("<<<<<<<<<<<<<<<<<  testNearMiles  >>>>>>>>>>>>>>>>>>>>");
 
-		DB db = mongo.getDB(Properties.getString("mongodb.db"));
+		DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
 		mongoOps.getCollection("locations").ensureIndex(index);
@@ -188,7 +192,7 @@ public class LocationQueryTest {
 	public void testNearPoint() {
 		log.info("<<<<<<<<<<<<<<<<<  testNearPoint  >>>>>>>>>>>>>>>>>>>>");
 
-		DB db = mongo.getDB(Properties.getString("mongodb.db"));
+		DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
 		mongoOps.getCollection("locations").ensureIndex(index);
@@ -223,8 +227,10 @@ public class LocationQueryTest {
 
 	@After
 	public void cleanDb() {
-		log.info("Cleaning...");
+		log.debug("Cleaning...");
 		mongoOps.dropCollection(Location.class);
+		log.debug("DBName:  " + mongoOps.getCollection("locations").getDB().getName());
+		log.debug("Locations Count:  " + mongoOps.getCollection("locations").count());
 	}
 
 }

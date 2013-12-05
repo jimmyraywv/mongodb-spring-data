@@ -37,7 +37,7 @@ public class ExplainAndHint {
 		ctx = new GenericXmlApplicationContext("context/main.xml");
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
 
-		EmployeeLoader.loadEmployees(true, 50000);
+		EmployeeLoader.loadEmployees(ctx, true, 50000);
 	}
 
 	@Test

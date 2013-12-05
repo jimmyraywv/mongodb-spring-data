@@ -31,7 +31,7 @@ public class EmployeeServiceTest {
 		ctx = new GenericXmlApplicationContext("context/main.xml");
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
 		employeeService = (EmployeeService) ctx.getBean("employeeService");
-		EmployeeLoader.loadEmployees(true, 50000);
+		EmployeeLoader.loadEmployees(ctx, true, 50000);
 	}
 
 	@Test

@@ -37,7 +37,8 @@ public class UpdateTest {
 		mongoOps = (MongoOperations) SpringBeanFactory.getBean("mongoTemplate");
 		employeeService = (EmployeeService) SpringBeanFactory
 				.getBean("employeeService");
-		EmployeeLoader.loadEmployees(true, 50000);
+		EmployeeLoader.loadEmployees(SpringBeanFactory.getContext(), true,
+				50000);
 
 		long startTime = System.currentTimeMillis();
 		employees = mongoOps.findAll(Employee.class);

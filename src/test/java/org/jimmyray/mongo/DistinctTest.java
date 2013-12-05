@@ -26,7 +26,8 @@ public class DistinctTest {
 	public void setUp() throws Exception {
 		SpringBeanFactory.initContext();
 		mongoOps = (MongoOperations) SpringBeanFactory.getBean("mongoTemplate");
-		EmployeeLoader.loadEmployees(true, 50000);
+		EmployeeLoader.loadEmployees(SpringBeanFactory.getContext(), true,
+				50000);
 	}
 
 	@Test

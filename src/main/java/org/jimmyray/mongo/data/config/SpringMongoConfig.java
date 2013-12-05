@@ -8,27 +8,29 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 
 /**
  * Spring MongoDB configuration class.
  * 
  */
 // @Configuration
+// @Profile("main")
+// -Dspring.profiles.active=main
 public class SpringMongoConfig extends AbstractMongoConfiguration {
-	private String databaseName = Properties
-			.getString("mongodb.db"); //$NON-NLS-1$
+	private String databaseName = Properties.getString("mongodb.db"); //$NON-NLS-1$
 
 	@Override
 	@Bean
 	public Mongo mongo() throws UnknownHostException {
-		return new Mongo(
-				Properties.getString("mongodb.url")); //$NON-NLS-1$
+		return new MongoClient(new MongoClientURI(
+				Properties.getString("mongodb.url")));
 	}
 
 	@Override
 	@Bean
 	public MongoTemplate mongoTemplate() throws UnknownHostException {
-
 		return new MongoTemplate(mongo(), this.databaseName);
 	}
 

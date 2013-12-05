@@ -7,7 +7,8 @@ import org.jimmyray.mongo.data.model.Location;
 import org.jimmyray.mongo.data.repository.LocationRepository;
 import org.jimmyray.mongo.data.transformers.LocationTransformer;
 import org.jimmyray.mongo.framework.GeoUtils;
-import org.jimmyray.mongo.framework.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.geo.Circle;
 import org.springframework.data.mongodb.core.geo.Distance;
@@ -25,6 +26,8 @@ import com.mongodb.Mongo;
  * The Class LocationServiceImpl.
  */
 public class LocationServiceImpl implements LocationService {
+	private static Logger log = LoggerFactory
+			.getLogger(LocationServiceImpl.class);
 
 	/** The location repository. */
 	private LocationRepository locationRepository;
@@ -38,15 +41,27 @@ public class LocationServiceImpl implements LocationService {
 	/** The db. */
 	private DB db;
 
+	/** dbName */
+	private String dbName;
+
+	public String getDbName() {
+		return dbName;
+	}
+
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.jimmyray.mongo.services.LocationService#init()
 	 */
-	//@Override
+	@Override
 	public void init() {
+		log.debug(dbName);
 		if (mongo != null) {
-			db = mongo.getDB(Properties.getString("mongodb.db.locs"));
+			db = mongo.getDB(this.dbName);
 		}
 	}
 
@@ -54,10 +69,10 @@ public class LocationServiceImpl implements LocationService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.jimmyray.mongo.services.LocationService#saveLocation(org.jimmyray.mongo.data
-	 * .model.Location)
+	 * org.jimmyray.mongo.services.LocationService#saveLocation(org.jimmyray
+	 * .mongo.data .model.Location)
 	 */
-	//@Override
+	@Override
 	public Location saveLocation(Location location) {
 		return this.locationRepository.save(location);
 	}
@@ -68,7 +83,7 @@ public class LocationServiceImpl implements LocationService {
 	 * @see
 	 * org.jimmyray.mongo.services.LocationService#saveLocations(java.util.List)
 	 */
-	//@Override
+	@Override
 	public void saveLocations(List<Location> locations) {
 		for (Location location : locations) {
 			this.saveLocation(location);
@@ -80,7 +95,7 @@ public class LocationServiceImpl implements LocationService {
 	 * 
 	 * @see org.jimmyray.mongo.services.LocationService#listLocations()
 	 */
-	//@Override
+	@Override
 	public List<Location> listLocations() {
 		return this.locationRepository.findAll();
 	}
@@ -89,9 +104,10 @@ public class LocationServiceImpl implements LocationService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.jimmyray.mongo.services.LocationService#getLocationById(java.lang.String)
+	 * org.jimmyray.mongo.services.LocationService#getLocationById(java.lang
+	 * .String)
 	 */
-	//@Override
+	@Override
 	public Location getLocationById(String id) {
 		return this.locationRepository.findById(id);
 	}
@@ -101,7 +117,7 @@ public class LocationServiceImpl implements LocationService {
 	 * 
 	 * @see org.jimmyray.mongo.services.LocationService#findAll()
 	 */
-	//@Override
+	@Override
 	public List<Location> findAll() {
 		return this.locationRepository.findAll();
 	}
@@ -109,9 +125,10 @@ public class LocationServiceImpl implements LocationService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.jimmyray.mongo.services.LocationService#findByCity(java.lang.String)
+	 * @see
+	 * org.jimmyray.mongo.services.LocationService#findByCity(java.lang.String)
 	 */
-	//@Override
+	@Override
 	public List<Location> findByCity(String city) {
 		return this.locationRepository.findByCity(city);
 	}
@@ -122,7 +139,7 @@ public class LocationServiceImpl implements LocationService {
 	 * @see
 	 * org.jimmyray.mongo.services.LocationService#findByState(java.lang.String)
 	 */
-	//@Override
+	@Override
 	public List<Location> findByState(String state) {
 		return this.locationRepository.findByState(state);
 	}
@@ -131,9 +148,10 @@ public class LocationServiceImpl implements LocationService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.jimmyray.mongo.services.LocationService#findByZipCode(java.lang.String)
+	 * org.jimmyray.mongo.services.LocationService#findByZipCode(java.lang.String
+	 * )
 	 */
-	//@Override
+	@Override
 	public List<Location> findByZipCode(String zipCode) {
 		return this.locationRepository.findByZipCode(zipCode);
 	}
@@ -141,10 +159,11 @@ public class LocationServiceImpl implements LocationService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.jimmyray.mongo.services.LocationService#bulkInsert(java.util.List,
+	 * @see
+	 * org.jimmyray.mongo.services.LocationService#bulkInsert(java.util.List,
 	 * int)
 	 */
-	//@Override
+	@Override
 	public void bulkInsert(List<Location> locations, int batchSize) {
 		DBCollection collection = db.getCollection("locations");
 		List<DBObject> docs = new ArrayList<DBObject>();
@@ -173,10 +192,10 @@ public class LocationServiceImpl implements LocationService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.jimmyray.mongo.services.LocationService#deleteLocation(org.jimmyray.mongo
-	 * .data.model.Location)
+	 * org.jimmyray.mongo.services.LocationService#deleteLocation(org.jimmyray
+	 * .mongo .data.model.Location)
 	 */
-	//@Override
+	@Override
 	public void deleteLocation(Location location) {
 		this.locationRepository.delete(location);
 	}
@@ -186,7 +205,7 @@ public class LocationServiceImpl implements LocationService {
 	 * 
 	 * @see org.jimmyray.mongo.services.LocationService#deleteAll()
 	 */
-	//@Override
+	@Override
 	public void deleteAll() {
 		this.locationRepository.deleteAll();
 	}
@@ -215,36 +234,36 @@ public class LocationServiceImpl implements LocationService {
 		this.mongoOps = mongoOps;
 	}
 
-	//@Override
+	@Override
 	public List<Location> findByCityAndState(String city, String state) {
 		return this.locationRepository.findByCityAndState(city, state);
 	}
 
-	//@Override
+	@Override
 	public List<Location> findByGeoWithin(Circle circle) {
 		return this.locationRepository.findByGeoWithin(circle.getCenter()
 				.getX(), circle.getCenter().getY(), circle.getRadius());
 	}
 
-	//@Override
+	@Override
 	public List<Location> findByCityAndStateAndZipCode(String city,
 			String state, String zipCode) {
 		return this.locationRepository.findByCityAndStateAndZipCode(city,
 				state, zipCode);
 	}
 
-	//@Override
+	@Override
 	public List<Location> findNear(double lon, double lat, double distance) {
 		return this.locationRepository.findByGeoNear(lon, lat, distance);
 	}
 
-	//@Override
+	@Override
 	public List<Location> findNear(Location location, double distanceInMiles) {
 		return this.findNear(location.getLongitude(), location.getLatitude(),
 				GeoUtils.milesToMeters(distanceInMiles));
 	}
 
-	//@Override
+	@Override
 	public GeoResults<Location> findNearPoint(Location location,
 			double distanceInMiles) {
 
@@ -252,7 +271,8 @@ public class LocationServiceImpl implements LocationService {
 
 		NearQuery query = NearQuery.near(point)
 				.maxDistance(new Distance(distanceInMiles, Metrics.MILES))
-				.distanceMultiplier(Metrics.MILES);
+				.in(Metrics.MILES);
+		// .distanceMultiplier(Metrics.MILES);
 
 		GeoResults<Location> results = this.mongoOps.geoNear(query,
 				Location.class);
