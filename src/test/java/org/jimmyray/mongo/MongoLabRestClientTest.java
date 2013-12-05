@@ -1,6 +1,7 @@
 package org.jimmyray.mongo;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.jimmyray.mongo.framework.Properties;
 import org.jimmyray.mongo.rest.client.MongoLabClient;
@@ -32,7 +33,8 @@ public class MongoLabRestClientTest {
 	@Test
 	public void testGetDbs() {
 		String out = this.restClient.listDatabases();
-		assertTrue("The string \"free\" was not found.", out.contains("free"));
 		log.debug(out);
+		assertTrue("The string \"free\" was not found.", out.contains("free"));
+		assertEquals("The response lenght was incorrect.", 10, out.length());
 	}
 }

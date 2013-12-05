@@ -40,20 +40,23 @@ public class MongoLabClient {
 
 			Client client = Client.create();
 
-			WebResource webResource = client.resource(this.getDbsUri + this.apiKey);
+			WebResource webResource = client.resource(this.getDbsUri
+					+ this.apiKey);
 
 			ClientResponse response = webResource.accept("application/json")
 					.get(ClientResponse.class);
 
 			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ response.getStatus());
+				throw new RuntimeException("REST API Failure: "
+						+ response.getEntity(String.class)
+						+ ", HTTP error code : " + response.getStatus());
 			}
 
 			output = response.getEntity(String.class);
 
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage());
+			output = e.getLocalizedMessage();
 		}
 
 		return output;
