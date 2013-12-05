@@ -37,13 +37,18 @@
 		</bean>
 	</beans>
 
-	<!-- ||||||||| lab profile ||||||||| -->
+	<!-- ||||||||| mongolab profile ||||||||| -->
 	<beans profile="lab">
 		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
 			init-method="init">
 			<property name="employeeRepository" ref="employeeRepository" />
 			<property name="mongo" ref="mongo" />
 			<property name="dbName" value="${mongolab.db}" />
+		</bean>
+
+		<bean id="mongoLabClient" class="org.jimmyray.mongo.rest.client.MongoLabClient">
+			<property name="apiKey" value="${mongolab.apiKey}" />
+			<property name="getDbsUri" value="${mongolab.rest.getDbs}" />
 		</bean>
 	</beans>
 
@@ -57,8 +62,8 @@
 			<property name="dbName" value="${mongodb.db.locs}" />
 		</bean>
 	</beans>
-	
-		<!-- ||||||||| geo profile ||||||||| -->
+
+	<!-- ||||||||| geo profile ||||||||| -->
 	<beans profile="geo">
 		<bean id="locationService" class="org.jimmyray.mongo.services.LocationServiceImpl"
 			init-method="init">
