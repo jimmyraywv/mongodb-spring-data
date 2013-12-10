@@ -51,6 +51,16 @@
 			<property name="getDbsUri" value="${mongolab.rest.getDbs}" />
 		</bean>
 	</beans>
+	
+	<!-- ||||||||| objectRocket profile ||||||||| -->
+	<beans profile="objectRocket">
+		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
+			init-method="init">
+			<property name="employeeRepository" ref="employeeRepository" />
+			<property name="mongo" ref="mongo" />
+			<property name="dbName" value="${objectRocket.db}" />
+		</bean>
+	</beans>
 
 	<!-- ||||||||| location profile ||||||||| -->
 	<beans profile="location">
@@ -75,7 +85,7 @@
 	</beans>
 
 	<!-- ||||||||| common ||||||||| -->
-	<beans profile="auth,local,hq,hqcb,lab">
+	<beans profile="auth,local,hq,hqcb,lab,objectRocket">
 		<bean name="SpringBeanFactory" class="org.jimmyray.mongo.framework.SpringBeanFactory" />
 
 		<bean id="customerService" class="org.jimmyray.mongo.services.CustomerServiceImpl">

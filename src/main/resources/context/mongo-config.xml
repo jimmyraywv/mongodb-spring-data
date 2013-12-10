@@ -154,9 +154,33 @@
 		<!-- To translate any MongoExceptions thrown in @Repository annotated classes -->
 		<context:annotation-config />
 	</beans>
+	
+	<!-- ||||||||| Object Rocket profile ||||||||| -->
+	<beans profile="objectRocket">
+		<!-- Default bean name is 'mongo' -->
+		<bean id="mongo" class="com.mongodb.Mongo">
+			<constructor-arg ref="mongoURI" />
+		</bean>
+
+		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+			<constructor-arg ref="mongo" />
+			<constructor-arg name="databaseName" value="${objectRocket.db}" />
+			<constructor-arg name="userCredentials" ref="mongoCreds" />
+		</bean>
+
+		<bean id="mongoCreds"
+			class="org.springframework.data.authentication.UserCredentials">
+			<constructor-arg name="username" value="${objectRocket.userName}" />
+			<constructor-arg name="password" value="${objectRocket.pwd}" />
+		</bean>
+
+		<bean class="com.mongodb.MongoURI" id="mongoURI">
+			<constructor-arg value="${objectRocket.uri}" />
+		</bean>
+	</beans>
 
 	<!-- ||||||||| common ||||||||| -->
-	<beans profile="auth,local,hq,hqcb,lab">
+	<beans profile="auth,local,hq,hqcb,lab,objectRocket">
 		<mongo:repositories base-package="org.jimmyray.mongo.data.repository">
 			<mongo:repository id="customerRepository"
 				mongo-template-ref="mongoTemplate" />

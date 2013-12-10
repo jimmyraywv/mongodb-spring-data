@@ -1,9 +1,18 @@
+# Java
 *.class
 *.log*
+
+# Eclipse
 .settings
 .classpath
 .project
 target
-creds.properties
+
+# SVN
 .svn
 
+# Mac
+.DS_Store
+
+# Security
+creds.properties
