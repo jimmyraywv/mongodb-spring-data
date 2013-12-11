@@ -3,6 +3,7 @@ package org.jimmyray.mongo.data.repository;
 import java.util.List;
 
 import org.jimmyray.mongo.data.model.Employee;
+import org.jimmyray.mongo.data.repository.custom.EmployeeBulk;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
@@ -17,7 +18,7 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
  */
 // @RepositoryDefinition(domainClass = Employee.class, idClass = String.class)
 public interface EmployeeRepository extends MongoRepository<Employee, String>,
-		QueryDslPredicateExecutor<Employee> {
+		QueryDslPredicateExecutor<Employee>, EmployeeBulk {
 
 	List<Employee> findAll();
 

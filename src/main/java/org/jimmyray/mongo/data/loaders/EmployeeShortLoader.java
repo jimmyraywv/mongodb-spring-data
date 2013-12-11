@@ -38,7 +38,7 @@ public final class EmployeeShortLoader {
 		log.info(Properties
 				.getString("springMongoConfig.msg.startingContainer")); //$NON-NLS-1$
 		ApplicationContext ctx = new GenericXmlApplicationContext(
-				Properties.getString("springMongoConfig.path.configFile.HQ")); //$NON-NLS-1$
+				Properties.getString("springMongoConfig.path.configFile")); //$NON-NLS-1$
 
 		EmployeeService employeeService = (EmployeeService) ctx
 				.getBean(Properties

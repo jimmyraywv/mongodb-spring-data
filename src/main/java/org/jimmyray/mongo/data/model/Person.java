@@ -25,6 +25,19 @@ public class Person extends BaseMongoModel {
 	@Field(PersonProperties.BIRTH_DATE)
 	private Date birthDate;
 
+	public Person() {
+		super();
+	}
+
+	protected Person(String id, String lastName, String firstName, String gender,
+			Date birthDate) {
+		super(id);
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.gender = gender;
+		this.birthDate = birthDate;
+	}
+
 	public String getLastName() {
 		return lastName;
 	}

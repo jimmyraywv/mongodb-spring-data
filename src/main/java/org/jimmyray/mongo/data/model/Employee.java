@@ -41,6 +41,30 @@ public class Employee extends Person {
 	@Transient
 	private boolean dirty;
 
+	public Employee() {
+
+	}
+
+	private Employee(String id, String lastName, String firstName,
+			String gender, Date birthDate, Address address, String employeeId,
+			Date hireDate, Department department, String title, int salary) {
+		super(id, lastName, firstName, gender, birthDate);
+		this.address = address;
+		this.employeeId = employeeId;
+		this.hireDate = hireDate;
+		this.department = department;
+		this.title = title;
+		this.salary = salary;
+	}
+
+	public Employee(Employee employee) {
+		this(employee.getId(), employee.getLastName(), employee.getFirstName(),
+				employee.getGender(), employee.getBirthDate(), employee
+						.getAddress(), employee.getEmployeeId(), employee
+						.getHireDate(), employee.getDepartment(), employee
+						.getTitle(), employee.getSalary());
+	}
+
 	public Address getAddress() {
 		return address;
 	}

@@ -12,6 +12,14 @@ public abstract class BaseMongoModel implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7588350609802434712L;
+	
+	public BaseMongoModel() {
+		
+	}
+	
+	protected BaseMongoModel(String id) {
+		this.id = id;
+	}
 
 	/** The id. */
 	@Id

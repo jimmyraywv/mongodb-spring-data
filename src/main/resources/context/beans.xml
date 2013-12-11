@@ -9,56 +9,40 @@
 
 	<!-- ||||||||| auth,local profiles ||||||||| -->
 	<beans profile="auth,local">
-		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
-			init-method="init">
-			<property name="employeeRepository" ref="employeeRepository" />
-			<property name="mongo" ref="mongo" />
-			<property name="dbName" value="${mongodb.db}" />
+		<bean id="dbName" class="java.lang.String">
+			<constructor-arg type="java.lang.String" value="${mongodb.db}" />
 		</bean>
 	</beans>
 
 	<!-- ||||||||| hq profile ||||||||| -->
 	<beans profile="hq">
-		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
-			init-method="init">
-			<property name="employeeRepository" ref="employeeRepository" />
-			<property name="mongo" ref="mongo" />
-			<property name="dbName" value="${mongohq.db}" />
+		<bean id="dbName" class="java.lang.String">
+			<constructor-arg type="java.lang.String" value="${mongohq.db}" />
 		</bean>
 	</beans>
 
 	<!-- ||||||||| hqcb profile ||||||||| -->
 	<beans profile="hqcb">
-		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
-			init-method="init">
-			<property name="employeeRepository" ref="employeeRepository" />
-			<property name="mongo" ref="mongo" />
-			<property name="dbName" value="${mongohq.cb.db}" />
+		<bean id="dbName" class="java.lang.String">
+			<constructor-arg type="java.lang.String" value="${mongohq.cb.db}" />
 		</bean>
 	</beans>
 
 	<!-- ||||||||| mongolab profile ||||||||| -->
 	<beans profile="lab">
-		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
-			init-method="init">
-			<property name="employeeRepository" ref="employeeRepository" />
-			<property name="mongo" ref="mongo" />
-			<property name="dbName" value="${mongolab.db}" />
+		<bean id="dbName" class="java.lang.String">
+			<constructor-arg type="java.lang.String" value="${mongolab.db}" />
 		</bean>
-
 		<bean id="mongoLabClient" class="org.jimmyray.mongo.rest.client.MongoLabClient">
 			<property name="apiKey" value="${mongolab.apiKey}" />
 			<property name="getDbsUri" value="${mongolab.rest.getDbs}" />
 		</bean>
 	</beans>
-	
+
 	<!-- ||||||||| objectRocket profile ||||||||| -->
 	<beans profile="objectRocket">
-		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl"
-			init-method="init">
-			<property name="employeeRepository" ref="employeeRepository" />
-			<property name="mongo" ref="mongo" />
-			<property name="dbName" value="${objectRocket.db}" />
+		<bean id="dbName" class="java.lang.String">
+			<constructor-arg type="java.lang.String" value="${objectRocket.db}" />
 		</bean>
 	</beans>
 
@@ -86,6 +70,10 @@
 
 	<!-- ||||||||| common ||||||||| -->
 	<beans profile="auth,local,hq,hqcb,lab,objectRocket">
+		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl">
+			<property name="employeeRepository" ref="employeeRepository" />
+		</bean>
+
 		<bean name="SpringBeanFactory" class="org.jimmyray.mongo.framework.SpringBeanFactory" />
 
 		<bean id="customerService" class="org.jimmyray.mongo.services.CustomerServiceImpl">
@@ -103,6 +91,12 @@
 		<bean id="fileStorageService" class="org.jimmyray.mongo.services.FileStorageServiceImpl">
 			<constructor-arg index="0" name="db" ref="gridfsDb" />
 		</bean>
+
+		<bean id="encryptionService" class="org.jimmyray.mongo.services.EncryptionServiceImpl">
+			<property name="tdeModule" ref="tdeModule" />
+		</bean>
+
+		<bean id="tdeModule" class="org.jimmyray.mongo.security.encryption.TDEModule" />
 	</beans>
 
 </beans>

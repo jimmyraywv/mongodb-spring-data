@@ -15,8 +15,6 @@ import org.springframework.data.domain.Sort;
 public interface EmployeeService {
 	Employee saveEmployee(Employee employee);
 
-	void init();
-
 	void saveEmployees(List<Employee> employees);
 
 	List<Employee> listEmployees();
@@ -33,6 +31,8 @@ public interface EmployeeService {
 	List<Employee> findByFirstName(String firstName);
 
 	List<Employee> findByGender(String gender);
+	
+	Employee findByEmployeeId(String employeeId);
 
 	List<Employee> queryByLastNameAndDepartment(String lastName, String deptName);
 

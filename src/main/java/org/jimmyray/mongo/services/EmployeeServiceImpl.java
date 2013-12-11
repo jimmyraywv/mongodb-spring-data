@@ -1,23 +1,12 @@
 package org.jimmyray.mongo.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jimmyray.mongo.data.model.Employee;
-import org.jimmyray.mongo.data.model.properties.EmployeeProperties;
 import org.jimmyray.mongo.data.repository.EmployeeRepository;
-import org.jimmyray.mongo.data.transformers.EmployeeTransformer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
-import com.mongodb.WriteResult;
 
 /**
  * Implementation of EmployeeService contract.
@@ -26,43 +15,37 @@ import com.mongodb.WriteResult;
  * @version 1.0
  */
 public class EmployeeServiceImpl implements EmployeeService {
-	private static Logger log = LoggerFactory
-			.getLogger(EmployeeServiceImpl.class);
 
 	private EmployeeRepository employeeRepository;
-	private Mongo mongo;
-	private DB db;
-	private String dbName;
 
-	public void init() {
-		if (mongo != null) {
-			db = mongo.getDB(this.dbName);
-		}
-		log.debug("Employee Service INIT");
-	}
-
+	@Override
 	public Employee saveEmployee(Employee employee) {
 		return employeeRepository.save(employee);
 	}
 
+	@Override
 	public void saveEmployees(List<Employee> employees) {
 		for (Employee employee : employees) {
 			this.saveEmployee(employee);
 		}
 	}
 
+	@Override
 	public List<Employee> listEmployees() {
 		return employeeRepository.findAll();
 	}
 
+	@Override
 	public Employee getEmployeeById(String employeeId) {
 		return employeeRepository.findByEmployeeId(employeeId);
 	}
 
+	@Override
 	public List<Employee> findAll() {
 		return employeeRepository.findAll();
 	}
 
+	@Override
 	public Page<Employee> findAllWithPages(int pageStart, int pageSize,
 			Sort.Direction sortDirection, String sortField) {
 		PageRequest pageRequest = new PageRequest(pageStart, pageSize,
@@ -70,80 +53,49 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeRepository.findAll(pageRequest);
 	}
 
+	@Override
 	public List<Employee> findByLastName(String lastName) {
 		return employeeRepository.findByLastName(lastName);
 	}
 
+	@Override
 	public List<Employee> findByFirstName(String firstName) {
 		return employeeRepository.findByFirstName(firstName);
 	}
 
+	@Override
 	public List<Employee> findByGender(String gender) {
 		return employeeRepository.findByGender(gender);
 	}
 
+	@Override
+	public Employee findByEmployeeId(String employeeId) {
+		return employeeRepository.findByEmployeeId(employeeId);
+	}
+
+	@Override
 	public List<Employee> queryByLastNameAndDepartment(String lastName,
 			String deptName) {
 		return employeeRepository.queryByEmployeeLastNameAndDepartmentName(
 				lastName, deptName);
 	}
 
+	@Override
 	public void deleteEmployee(Employee employee) {
 		this.employeeRepository.delete(employee);
 	}
 
+	@Override
 	public void deleteAll() {
 		this.employeeRepository.deleteAll();
 	}
 
 	@Override
 	public void bulkInsert(List<Employee> employees, int batchSize) {
-		DBCollection collection = this.db
-				.getCollection(EmployeeProperties.COLLECTION);
-		List<DBObject> docs = new ArrayList<DBObject>();
-		EmployeeTransformer transformer = new EmployeeTransformer();
-		WriteResult result = null;
-
-		int insertCounter = 0;
-
-		for (Employee employee : employees) {
-			docs.add((DBObject) transformer.transform(employee));
-			insertCounter++;
-
-			if (insertCounter == batchSize) {
-				result = collection.insert(docs);
-				if (log.isDebugEnabled()) {
-					if (result.getError() != null) {
-						log.debug(result.getError());
-					} else {
-						log.debug(result.toString());
-					}
-				}
-
-				insertCounter = 0;
-				docs = new ArrayList<DBObject>();
-			}
-		}
-
-		// catch last docs
-		if (insertCounter > 0 && !docs.isEmpty()) {
-			collection.insert(docs);
-		}
-	}
-
-	public String getDbName() {
-		return dbName;
-	}
-
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
+		this.employeeRepository.bulkInsert(employees, batchSize);
 	}
 
 	public void setEmployeeRepository(EmployeeRepository employeeRepository) {
 		this.employeeRepository = employeeRepository;
-	}
-
-	public void setMongo(Mongo mongo) {
-		this.mongo = mongo;
 	}
 }
