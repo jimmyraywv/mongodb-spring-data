@@ -11,7 +11,6 @@ import java.util.Map;
 import org.jimmyray.mongo.data.loaders.EmployeeShortLoader;
 import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.framework.Properties;
-import org.jimmyray.mongo.security.encryption.TDEModule;
 import org.jimmyray.mongo.services.EmployeeService;
 import org.jimmyray.mongo.services.EncryptionService;
 import org.junit.After;
@@ -52,15 +51,13 @@ public class TDETest {
 
 		this.employeeService = (EmployeeService) ctx.getBean(Properties
 				.getString("springMongoConfig.bean.employeeService"));
-		
+
 		this.encryptionService = (EncryptionService) ctx.getBean(Properties
 				.getString("springMongoConfig.bean.encryptionService"));
 	}
 
 	@Test
 	public void testTDE() throws Exception {
-		TDEModule tde = new TDEModule();
-
 		this.employees = EmployeeShortLoader.getEmployees();
 		this.employeeMap = new HashMap<String, Employee>();
 
@@ -68,7 +65,7 @@ public class TDETest {
 		Employee clonedEmployee = null;
 
 		for (Employee employee : employees) {
-			encryptedData = tde.encrypt(employee.getTitle());
+			encryptedData = this.encryptionService.encrypt(employee.getTitle());
 			log.debug("Encrypted Data:  " + encryptedData);
 
 			clonedEmployee = new Employee(employee);
@@ -95,16 +92,16 @@ public class TDETest {
 			assertFalse("It does not appear that encryption worked.",
 					clonedEmployee.getTitle().equals(employee.getTitle()));
 			assertEquals("Titles did not match.", clonedEmployee.getTitle(),
-					tde.decrypt(employee.getTitle()));
+					this.encryptionService.decrypt(employee.getTitle()));
 
 			log.debug("Employee:  " + employee.getEmployeeId() + ", Title: "
 					+ employee.getTitle());
 		}
 	}
-	
+
 	@After
 	public void tearDown() {
-			log.debug("Cleaning...");
-			mongoOps.dropCollection(Employee.class);
+		log.debug("Cleaning...");
+		mongoOps.dropCollection(Employee.class);
 	}
 }
