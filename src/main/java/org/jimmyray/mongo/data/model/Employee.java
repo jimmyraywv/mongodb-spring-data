@@ -45,6 +45,31 @@ public class Employee extends Person {
 
 	}
 
+	/*
+	 * Private copy constructor for use in "Cloning" Employee objects.
+	 * 
+	 * @param id
+	 * 
+	 * @param lastName
+	 * 
+	 * @param firstName
+	 * 
+	 * @param gender
+	 * 
+	 * @param birthDate
+	 * 
+	 * @param address
+	 * 
+	 * @param employeeId
+	 * 
+	 * @param hireDate
+	 * 
+	 * @param department
+	 * 
+	 * @param title
+	 * 
+	 * @param salary
+	 */
 	private Employee(String id, String lastName, String firstName,
 			String gender, Date birthDate, Address address, String employeeId,
 			Date hireDate, Department department, String title, int salary) {
@@ -57,6 +82,12 @@ public class Employee extends Person {
 		this.salary = salary;
 	}
 
+	/**
+	 * Public copy constructor for "cloning" without using clone() and
+	 * Cloneable.
+	 * 
+	 * @param employee
+	 */
 	public Employee(Employee employee) {
 		this(employee.getId(), employee.getLastName(), employee.getFirstName(),
 				employee.getGender(), employee.getBirthDate(), employee

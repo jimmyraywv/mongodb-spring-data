@@ -7,6 +7,12 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+/**
+ * REST API client for MongoLab REST API Calls (unfinished).
+ * 
+ * @author jimmyray
+ * @version 1.0
+ */
 public class MongoLabClient {
 	private static Logger log = LoggerFactory.getLogger(MongoLabClient.class);
 
@@ -33,6 +39,11 @@ public class MongoLabClient {
 
 	}
 
+	/**
+	 * List databases in MongoLab
+	 * 
+	 * @return String JSOn output of REST call
+	 */
 	public String listDatabases() {
 		String output = null;
 

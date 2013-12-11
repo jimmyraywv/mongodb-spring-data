@@ -7,8 +7,15 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+/**
+ * Placeholder for REST client for Object Rocket REST API.
+ * 
+ * @author jimmyray
+ * @version 1.0
+ */
 public class ObjectRocketClient {
-	private static Logger log = LoggerFactory.getLogger(ObjectRocketClient.class);
+	private static Logger log = LoggerFactory
+			.getLogger(ObjectRocketClient.class);
 
 	private String apiKey;
 
@@ -31,10 +38,8 @@ public class ObjectRocketClient {
 
 			Client client = Client.create();
 
-			
-			//TODO Flesh out the URI
-			WebResource webResource = client.resource("<URI>"
-					+ this.apiKey);
+			// TODO Flesh out the URI
+			WebResource webResource = client.resource("<URI>" + this.apiKey);
 
 			ClientResponse response = webResource.accept("application/json")
 					.get(ClientResponse.class);
