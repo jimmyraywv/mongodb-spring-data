@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.jimmyray.mongo.data.loaders.EmployeeShortLoader;
 import org.jimmyray.mongo.data.model.Employee;
+import org.jimmyray.mongo.framework.Properties;
 import org.jimmyray.mongo.services.EmployeeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,8 @@ public class EmployeeServiceJsonTest {
 
 	@Before
 	public void setup() throws Exception {
-		ctx = new GenericXmlApplicationContext("context/main.xml");
+		ctx = new GenericXmlApplicationContext(
+				Properties.getString("springMongoConfig.path.configFile"));
 		employeeService = (EmployeeService) ctx.getBean("employeeService");
 		this.employees = EmployeeShortLoader.getEmployees();
 	}
