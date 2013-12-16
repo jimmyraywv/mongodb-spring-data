@@ -29,6 +29,7 @@ public class TDEModule {
 	}
 
 	/**
+	 * decrypt
 	 * 
 	 * @param encryptedText
 	 * @return

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.jimmyray.mongo.data.loaders.EmployeeLoader;
 import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.data.model.properties.EmployeeProperties;
+import org.jimmyray.mongo.framework.Properties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,13 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
 
+/**
+ * Test for Collections operations.
+ * 
+ * @author jimmyray
+ * @version 1.0
+ */
+// JVM Settings -Xmx512M -Dspring.profiles.active=local
 public class CollectionOpsTest {
 	private static Logger log = LoggerFactory
 			.getLogger(CollectionOpsTest.class);
@@ -27,7 +35,7 @@ public class CollectionOpsTest {
 	@Before
 	public void setUp() throws Exception {
 		ApplicationContext ctx = new GenericXmlApplicationContext(
-				"context/main-HQ.xml");
+				Properties.getString("springMongoConfig.path.configFile"));
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
 		EmployeeLoader.loadEmployees(ctx, true, 50000);
 	}
@@ -39,7 +47,8 @@ public class CollectionOpsTest {
 		employee.setLastName("Ray");
 		mongoOps.save(employee);
 
-		DBCollection collection = mongoOps.getCollection(EmployeeProperties.COLLECTION);
+		DBCollection collection = mongoOps
+				.getCollection(EmployeeProperties.COLLECTION);
 		assertEquals("Employees collection count was wrong.", 300025,
 				collection.count());
 
@@ -59,7 +68,8 @@ public class CollectionOpsTest {
 		BasicDBObject query = new BasicDBObject();
 		query.put(EmployeeProperties.LAST_NAME, "Ray");
 
-		DBCollection collection = mongoOps.getCollection(EmployeeProperties.COLLECTION);
+		DBCollection collection = mongoOps
+				.getCollection(EmployeeProperties.COLLECTION);
 		WriteResult result = collection.remove(query);
 		log.info(result.toString());
 	}

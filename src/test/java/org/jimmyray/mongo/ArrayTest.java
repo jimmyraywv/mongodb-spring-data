@@ -27,6 +27,12 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+/**
+ * Test Array query operations.
+ * 
+ * @author jimmyray
+ * @version 1.0
+ */
 public class ArrayTest {
 	private static Logger log = LoggerFactory.getLogger(ArrayTest.class);
 

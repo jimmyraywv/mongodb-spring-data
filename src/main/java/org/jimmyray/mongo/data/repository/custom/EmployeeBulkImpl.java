@@ -25,6 +25,14 @@ import com.mongodb.WriteResult;
 public abstract class EmployeeBulkImpl implements EmployeeBulk {
 	private static Logger log = LoggerFactory.getLogger(EmployeeBulkImpl.class);
 
+	/**
+	 * Bulk inserts docs of a spepcifc batch size.
+	 * 
+	 * @param employees
+	 *            List<Employee>
+	 * @param batchSize
+	 *            int
+	 */
 	@Override
 	public void bulkInsert(List<Employee> employees, int batchSize) {
 		Mongo mongo = (Mongo) SpringBeanFactory.getBean("mongo");

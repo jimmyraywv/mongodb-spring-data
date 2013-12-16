@@ -92,7 +92,7 @@ public final class EmployeeShortLoader {
 				employee.setDepartment(dept);
 				employee.setBirthDate(sdf.parse(line.next()));
 				Address address = new Address();
-				address.setId("Home");
+				address.setId("Work");
 				inline = new Scanner(line.next());
 				inline.useDelimiter(EmployeeShortLoader.COMMON_DELIMITER);
 				address.setAddressLine1(inline.next());

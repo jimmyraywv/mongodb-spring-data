@@ -41,4 +41,8 @@ public interface EmployeeService {
 	void deleteEmployee(Employee employee);
 
 	void deleteAll();
+	
+	String getEmployeeJson(Employee employee);
+	
+	Employee generateEmployeeFromJson(String json);
 }

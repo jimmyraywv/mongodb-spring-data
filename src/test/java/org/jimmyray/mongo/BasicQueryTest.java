@@ -27,7 +27,13 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-//JVM Settings -Xmx512M -Dspring.profiles.active=local
+/**
+ * Basic Query Tests
+ * 
+ * @author jimmyray
+ * @version 1.0
+ */
+// JVM Settings -Xmx512M -Dspring.profiles.active=local
 public class BasicQueryTest {
 	private static Logger log = LoggerFactory.getLogger(BasicQueryTest.class);
 

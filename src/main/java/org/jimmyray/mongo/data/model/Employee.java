@@ -3,6 +3,7 @@ package org.jimmyray.mongo.data.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jimmyray.mongo.data.model.properties.EmployeeProperties;
 import org.jimmyray.mongo.framework.Strings;
 import org.springframework.data.annotation.Transient;
@@ -18,6 +19,7 @@ import com.mysema.query.annotations.QueryEntity;
  * @author jimmyray
  * @version 1.0
  */
+@JsonIgnoreProperties({"dirty"})
 @QueryEntity
 @Document(collection = EmployeeProperties.COLLECTION)
 public class Employee extends Person {
