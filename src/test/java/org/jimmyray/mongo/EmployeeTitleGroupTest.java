@@ -45,7 +45,7 @@ public class EmployeeTitleGroupTest {
 	@Test
 	public void testGroup() throws Exception {
 		// Run Group Operation
-		GroupByResults results = mongoOps
+		GroupByResults<Object> results = mongoOps
 				.group(EmployeeProperties.COLLECTION,
 						GroupBy.key(EmployeeProperties.TITLE)
 								.initialDocument("{ count: 0 }")
@@ -62,7 +62,7 @@ public class EmployeeTitleGroupTest {
 		Map<Object, Object> data = mapper.readValue(rawResults.toString(),
 				Map.class);
 
-		List retval = (List) data.get("retval");
+		List<Object> retval = (List<Object>) data.get("retval");
 		float count = 0;
 		for (Object object : retval) {
 			String currentDept = (((Map) object).get(EmployeeProperties.TITLE))

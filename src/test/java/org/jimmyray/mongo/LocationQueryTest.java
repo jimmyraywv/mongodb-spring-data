@@ -8,7 +8,6 @@ import java.util.List;
 import org.jimmyray.mongo.data.loaders.LocationLoader;
 import org.jimmyray.mongo.data.model.Location;
 import org.jimmyray.mongo.framework.GeoUtils;
-import org.jimmyray.mongo.framework.Properties;
 import org.jimmyray.mongo.services.LocationService;
 import org.junit.After;
 import org.junit.Before;
@@ -23,9 +22,7 @@ import org.springframework.data.mongodb.core.geo.GeoResult;
 import org.springframework.data.mongodb.core.geo.GeoResults;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 
 
 //JVM Settings -Xmx512M -Dspring.profiles.active=location
@@ -34,7 +31,7 @@ public class LocationQueryTest {
 			.getLogger(LocationQueryTest.class);
 
 	private ApplicationContext ctx;
-	private static Mongo mongo;
+	//private static Mongo mongo;
 	private static MongoOperations mongoOps;
 	List<Location> locations;
 	LocationService locationService;
@@ -43,7 +40,7 @@ public class LocationQueryTest {
 	public void setup() {
 		ctx = new GenericXmlApplicationContext("context/main.xml");
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
-		mongo = (Mongo) ctx.getBean("mongo");
+		//mongo = (Mongo) ctx.getBean("mongo");
 		this.locationService = (LocationService) ctx.getBean("locationService");
 		LocationLoader.main(null);
 	}
@@ -117,7 +114,7 @@ public class LocationQueryTest {
 	@Test
 	public void testNear() {
 		log.info("<<<<<<<<<<<<<<<<<  testNear  >>>>>>>>>>>>>>>>>>>>");
-		DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
+		//DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
 		mongoOps.getCollection("locations").ensureIndex(index);
@@ -158,7 +155,7 @@ public class LocationQueryTest {
 	public void testNearMiles() {
 		log.info("<<<<<<<<<<<<<<<<<  testNearMiles  >>>>>>>>>>>>>>>>>>>>");
 
-		DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
+		//DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
 		mongoOps.getCollection("locations").ensureIndex(index);
@@ -192,7 +189,7 @@ public class LocationQueryTest {
 	public void testNearPoint() {
 		log.info("<<<<<<<<<<<<<<<<<  testNearPoint  >>>>>>>>>>>>>>>>>>>>");
 
-		DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
+		//DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
 		mongoOps.getCollection("locations").ensureIndex(index);

@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import java.util.List;
 
 import org.jimmyray.mongo.data.loaders.EmployeeLoader;
-import org.jimmyray.mongo.data.loaders.EmployeeShortLoader;
 import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.data.model.properties.EmployeeProperties;
 import org.junit.After;
