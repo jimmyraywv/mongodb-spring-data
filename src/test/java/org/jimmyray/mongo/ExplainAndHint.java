@@ -24,6 +24,12 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+/**
+ * Test to demo hints and explain plans in MongoDB.
+ * 
+ * @author jimmyray
+ * @version 1.0
+ */
 public class ExplainAndHint {
 	private static Logger log = LoggerFactory.getLogger(ExplainAndHint.class);
 
@@ -79,11 +85,12 @@ public class ExplainAndHint {
 	public void testBasicQuerySpringData() {
 		Query query = new Query();
 		query.addCriteria(
-				Criteria.where(EmployeeProperties.EMPLOYEE_ID).is("28241")).withHint(EmployeeProperties.EMPLOYEE_ID)
-				.fields().exclude(EmployeeProperties.ID)
+				Criteria.where(EmployeeProperties.EMPLOYEE_ID).is("28241"))
+				.withHint(EmployeeProperties.EMPLOYEE_ID).fields()
+				.exclude(EmployeeProperties.ID)
 				.include(EmployeeProperties.LAST_NAME)
 				.include(EmployeeProperties.EMPLOYEE_ID);
-		
+
 		List<Employee> employees = this.mongoOps.find(query, Employee.class);
 		log.info(employees.toString());
 

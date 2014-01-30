@@ -10,7 +10,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 /**
- * The Class EmployeeTransformer.
+ * The Class LocationTransformer.
  * 
  * @author jimmyray
  */

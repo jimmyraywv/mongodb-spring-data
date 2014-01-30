@@ -3,6 +3,7 @@ package org.jimmyray.mongo.data.model;
 import java.io.Serializable;
 import java.text.MessageFormat;
 
+import org.jimmyray.mongo.data.model.properties.DepartmentProperties;
 import org.jimmyray.mongo.framework.ApplicationConstants;
 import org.jimmyray.mongo.framework.Strings;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,7 +18,7 @@ public class Department implements Serializable {
 	private static final long serialVersionUID = 2618154643598466552L;
 	private String name;
 	private String id;
-	@Field("mgrId")
+	@Field(DepartmentProperties.MANAGER_ID)
 	private String managerId;
 
 	public String getName() {

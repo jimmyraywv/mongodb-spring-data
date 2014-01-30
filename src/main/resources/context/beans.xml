@@ -12,7 +12,7 @@
 		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl" />
 	</beans>
 
-	<!-- ||||||||| auth,local profiles ||||||||| -->
+	<!-- ||||||||| auth,local,convert profiles ||||||||| -->
 	<beans profile="auth,local">
 		<bean id="dbName" class="java.lang.String">
 			<constructor-arg type="java.lang.String" value="${mongodb.db}" />
@@ -74,7 +74,7 @@
 	</beans>
 
 	<!-- ||||||||| common ||||||||| -->
-	<beans profile="auth,local,hq,hqcb,lab,objectRocket">
+	<beans profile="auth,local,convert,hq,hqcb,lab,objectRocket">
 		<bean id="employeeService" class="org.jimmyray.mongo.services.EmployeeServiceImpl">
 			<property name="employeeRepository" ref="employeeRepository" />
 		</bean>

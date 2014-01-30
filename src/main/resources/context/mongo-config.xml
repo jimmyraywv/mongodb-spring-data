@@ -45,6 +45,27 @@
 		<context:annotation-config />
 	</beans>
 
+	<!-- ||||||||| convert profile ||||||||| -->
+	<beans profile="convert">
+		<mongo:db-factory dbname="${mongodb.db}" port="${mongodb.port}"/>
+
+		<mongo:mapping-converter>
+			<mongo:custom-converters>
+				<mongo:converter ref="readConverter" />
+			</mongo:custom-converters>
+		</mongo:mapping-converter>
+
+		<bean id="readConverter"
+			class="org.jimmyray.mongo.data.converters.DBObjectJsonReadConverter" />
+
+		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+			<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+			<constructor-arg name="mongoConverter" ref="mappingConverter" />
+		</bean>
+
+		<context:annotation-config />
+	</beans>
+
 	<!-- ||||||||| hq profile ||||||||| -->
 	<beans profile="hq">
 		<!-- Default bean name is 'mongo' -->
@@ -154,7 +175,7 @@
 		<!-- To translate any MongoExceptions thrown in @Repository annotated classes -->
 		<context:annotation-config />
 	</beans>
-	
+
 	<!-- ||||||||| Object Rocket profile ||||||||| -->
 	<beans profile="objectRocket">
 		<!-- Default bean name is 'mongo' -->
@@ -180,7 +201,7 @@
 	</beans>
 
 	<!-- ||||||||| common ||||||||| -->
-	<beans profile="auth,local,hq,hqcb,lab,objectRocket">
+	<beans profile="auth,local,convert,hq,hqcb,lab,objectRocket">
 		<mongo:repositories base-package="org.jimmyray.mongo.data.repository">
 			<mongo:repository id="customerRepository"
 				mongo-template-ref="mongoTemplate" />

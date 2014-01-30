@@ -17,6 +17,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 
+
+//JVM Settings -Xmx512M -Dspring.profiles.active=local
 public class EmployeeServiceTest {
 	private static Logger log = LoggerFactory
 			.getLogger(EmployeeServiceTest.class);

@@ -31,7 +31,7 @@ public class FindAndTest {
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
 
 		try {
-			EmployeeShortLoader.main(new String[] {});
+			EmployeeShortLoader.main(null);
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage());
 		}

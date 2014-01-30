@@ -65,7 +65,8 @@ public class MongoTemplateTest {
 
 	@After
 	public void cleanDb() {
-		log.info("Cleaning MongoDB, removing \"employees\" collection...");
+		log.info("Cleaning MongoDB, removing \""
+				+ EmployeeProperties.COLLECTION + "\" collection...");
 		mongoOps.dropCollection(Employee.class);
 	}
 }

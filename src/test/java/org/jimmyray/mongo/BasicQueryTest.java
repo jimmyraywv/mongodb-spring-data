@@ -46,7 +46,7 @@ public class BasicQueryTest {
 		ctx = new GenericXmlApplicationContext(
 				Properties.getString("springMongoConfig.path.configFile"));
 
-		EmployeeLoader.loadEmployees(ctx, true, 10000);
+		EmployeeLoader.loadEmployees(ctx, true, 50000);
 	}
 
 	@Before
@@ -258,7 +258,7 @@ public class BasicQueryTest {
 			assertEquals("Keyset size not equal to 2.", 2, dbo.keySet().size());
 		}
 
-		cleanFlag = true;
+		cleanFlag = false;
 	}
 
 	@After
