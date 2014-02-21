@@ -16,3 +16,5 @@ target
 
 # Security
 creds.properties
+/temp
+/.gitignore
