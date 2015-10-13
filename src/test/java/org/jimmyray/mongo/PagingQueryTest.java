@@ -41,60 +41,46 @@ public class PagingQueryTest {
 
 	@Test
 	public void testPaging() {
-		String[] lastNames = new String[] { "Stanfel", "Gustavson", "Lortz",
-				"Marquardt", "Unno", "Savasere", "Spelt", "Wynblatt",
-				"Danecki", "Weedman", "Hartvigsen", "Menhoudj", "Heyers",
-				"Willoner", "Shumilov", "Zuberek", "Boguraev" };
+		String[] lastNames = new String[] { "Stanfel", "Gustavson", "Lortz", "Marquardt", "Unno", "Savasere", "Spelt",
+				"Wynblatt", "Danecki", "Weedman", "Hartvigsen", "Menhoudj", "Heyers", "Willoner", "Shumilov", "Zuberek",
+				"Boguraev" };
 		int pageCount = 10;
 		int pageNumber = 0;
 		String sortField = EmployeeProperties.EMPLOYEE_ID;
 		Sort.Direction sortOrder = Sort.Direction.DESC;
 
-		Page<Employee> employeesPage = employeeService.findAllWithPages(
-				pageNumber, pageCount, sortOrder, sortField);
+		Page<Employee> employeesPage = employeeService.findAllWithPages(pageNumber, pageCount, sortOrder, sortField);
 
-		while (employeesPage.hasNextPage()) {
+		while (employeesPage.hasNext()) {
 
-			assertEquals("List size is incorrect.", pageCount,
-					employeesPage.getSize());
+			assertEquals("List size is incorrect.", pageCount, employeesPage.getSize());
 
 			log.info("Page Number = " + pageNumber);
 
 			if (employeesPage.hasContent()) {
-				log.info(employeesPage.getContent()
-						.get(employeesPage.getSize() - 1).getLastName());
+				log.info(employeesPage.getContent().get(employeesPage.getSize() - 1).getLastName());
 
-				assertEquals(
-						"Last name was incorrect.",
-						lastNames[pageNumber],
-						employeesPage.getContent()
-								.get(employeesPage.getSize() - 1).getLastName());
+				assertEquals("Last name was incorrect.", lastNames[pageNumber],
+						employeesPage.getContent().get(employeesPage.getSize() - 1).getLastName());
 			}
 
 			pageNumber++;
 
-			employeesPage = employeeService.findAllWithPages(pageNumber,
-					pageCount, sortOrder, sortField);
+			employeesPage = employeeService.findAllWithPages(pageNumber, pageCount, sortOrder, sortField);
 		}
 
 		log.info("Page Number = " + pageNumber);
 
-		employeesPage = employeeService.findAllWithPages(pageNumber, pageCount,
-				sortOrder, sortField);
+		employeesPage = employeeService.findAllWithPages(pageNumber, pageCount, sortOrder, sortField);
 
-		log.info(employeesPage.getContent()
-				.get(employeesPage.getContent().size() - 1).getLastName());
+		log.info(employeesPage.getContent().get(employeesPage.getContent().size() - 1).getLastName());
 
-		assertEquals(
-				"Last name was incorrect.",
-				lastNames[pageNumber],
-				employeesPage.getContent()
-						.get(employeesPage.getContent().size() - 1)
-						.getLastName());
+		assertEquals("Last name was incorrect.", lastNames[pageNumber],
+				employeesPage.getContent().get(employeesPage.getContent().size() - 1).getLastName());
 	}
 
 	@After
 	public void tearDown() {
-		//this.mongoOps.getCollection(EmployeeProperties.COLLECTION).drop();
+		// this.mongoOps.getCollection(EmployeeProperties.COLLECTION).drop();
 	}
 }

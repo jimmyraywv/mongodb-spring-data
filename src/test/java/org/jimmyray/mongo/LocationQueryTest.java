@@ -16,22 +16,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.geo.Circle;
-import org.springframework.data.mongodb.core.geo.GeoResult;
-import org.springframework.data.mongodb.core.geo.GeoResults;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-
 //JVM Settings -Xmx512M -Dspring.profiles.active=location
 public class LocationQueryTest {
-	private static Logger log = LoggerFactory
-			.getLogger(LocationQueryTest.class);
+	private static Logger log = LoggerFactory.getLogger(LocationQueryTest.class);
 
 	private ApplicationContext ctx;
-	//private static Mongo mongo;
+	// private static Mongo mongo;
 	private static MongoOperations mongoOps;
 	List<Location> locations;
 	LocationService locationService;
@@ -40,7 +38,7 @@ public class LocationQueryTest {
 	public void setup() {
 		ctx = new GenericXmlApplicationContext("context/main.xml");
 		mongoOps = (MongoOperations) ctx.getBean("mongoTemplate");
-		//mongo = (Mongo) ctx.getBean("mongo");
+		// mongo = (Mongo) ctx.getBean("mongo");
 		this.locationService = (LocationService) ctx.getBean("locationService");
 		LocationLoader.main(null);
 	}
@@ -59,19 +57,15 @@ public class LocationQueryTest {
 		 * "Wheeling", "WV");
 		 */
 
-		List<Location> locations = locationService
-				.findByCityAndStateAndZipCode("Wheeling", "WV", "26003");
+		List<Location> locations = locationService.findByCityAndStateAndZipCode("Wheeling", "WV", "26003");
 
 		log.debug("List Size:  " + locations.size());
 
 		assertNotNull("locations[0] was null.", locations.get(0));
 
-		assertEquals("City was not correct.", "Wheeling", locations.get(0)
-				.getCity());
-		assertEquals("State was not correct.", "WV", locations.get(0)
-				.getState());
-		assertEquals("ZipCode was not correct.", "26003", locations.get(0)
-				.getZipCode());
+		assertEquals("City was not correct.", "Wheeling", locations.get(0).getCity());
+		assertEquals("State was not correct.", "WV", locations.get(0).getState());
+		assertEquals("ZipCode was not correct.", "26003", locations.get(0).getZipCode());
 
 		// Used to troubleshoot Location Repo
 		/*
@@ -92,17 +86,14 @@ public class LocationQueryTest {
 		 */
 
 		List<Location> locales = this.locationService
-				.findByGeoWithin(new Circle(locations.get(0).getLongitude(),
-						locations.get(0).getLatitude(), 1));
+				.findByGeoWithin(new Circle(locations.get(0).getLongitude(), locations.get(0).getLatitude(), 1));
 
 		for (Location locale : locales) {
 			log.info(locale.toString());
 		}
 
-		assertEquals("City was not correct.", "Aliquippa", locales.get(0)
-				.getCity());
-		assertEquals("City was not correct.", "Conway", locales.get(19)
-				.getCity());
+		assertEquals("City was not correct.", "Aliquippa", locales.get(0).getCity());
+		assertEquals("City was not correct.", "Conway", locales.get(19).getCity());
 
 	}
 
@@ -114,35 +105,28 @@ public class LocationQueryTest {
 	@Test
 	public void testNear() {
 		log.info("<<<<<<<<<<<<<<<<<  testNear  >>>>>>>>>>>>>>>>>>>>");
-		//DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
+		// DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
-		mongoOps.getCollection("locations").ensureIndex(index);
+		mongoOps.getCollection("locations").createIndex(index);
 
-		List<Location> locations = locationService.findByCityAndState(
-				"Wheeling", "WV");
+		List<Location> locations = locationService.findByCityAndState("Wheeling", "WV");
 
 		assertNotNull("locations[0] was null.", locations.get(0));
 
-		assertEquals("City was not correct.", "Wheeling", locations.get(0)
-				.getCity());
-		assertEquals("State was not correct.", "WV", locations.get(0)
-				.getState());
-		assertEquals("ZipCode was not correct.", "26003", locations.get(0)
-				.getZipCode());
+		assertEquals("City was not correct.", "Wheeling", locations.get(0).getCity());
+		assertEquals("State was not correct.", "WV", locations.get(0).getState());
+		assertEquals("ZipCode was not correct.", "26003", locations.get(0).getZipCode());
 
-		List<Location> locales = this.locationService.findNear(locations.get(0)
-				.getLongitude(), locations.get(0).getLatitude(), GeoUtils
-				.milesToMeters(5));
+		List<Location> locales = this.locationService.findNear(locations.get(0).getLongitude(),
+				locations.get(0).getLatitude(), GeoUtils.milesToMeters(5));
 
 		for (Location locale : locales) {
 			log.info(locale.toString());
 		}
 
-		assertEquals("City was not correct.", "Yorkville", locales.get(2)
-				.getCity());
-		assertEquals("City was not correct.", "Glen Dale", locales.get(14)
-				.getCity());
+		assertEquals("City was not correct.", "Yorkville", locales.get(2).getCity());
+		assertEquals("City was not correct.", "Glen Dale", locales.get(14).getCity());
 	}
 
 	/**
@@ -155,71 +139,55 @@ public class LocationQueryTest {
 	public void testNearMiles() {
 		log.info("<<<<<<<<<<<<<<<<<  testNearMiles  >>>>>>>>>>>>>>>>>>>>");
 
-		//DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
+		// DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
-		mongoOps.getCollection("locations").ensureIndex(index);
+		mongoOps.getCollection("locations").createIndex(index);
 
-		List<Location> locations = locationService.findByCityAndState(
-				"Wheeling", "WV");
+		List<Location> locations = locationService.findByCityAndState("Wheeling", "WV");
 
 		assertNotNull("locations[0] was null.", locations.get(0));
 
-		assertEquals("City was not correct.", "Wheeling", locations.get(0)
-				.getCity());
-		assertEquals("State was not correct.", "WV", locations.get(0)
-				.getState());
-		assertEquals("ZipCode was not correct.", "26003", locations.get(0)
-				.getZipCode());
+		assertEquals("City was not correct.", "Wheeling", locations.get(0).getCity());
+		assertEquals("State was not correct.", "WV", locations.get(0).getState());
+		assertEquals("ZipCode was not correct.", "26003", locations.get(0).getZipCode());
 
-		List<Location> locales = this.locationService.findNear(
-				locations.get(0), 5);
+		List<Location> locales = this.locationService.findNear(locations.get(0), 5);
 
 		for (Location locale : locales) {
 			log.info(locale.toString());
 		}
 
-		assertEquals("City was not correct.", "Yorkville", locales.get(2)
-				.getCity());
-		assertEquals("City was not correct.", "Glen Dale", locales.get(14)
-				.getCity());
+		assertEquals("City was not correct.", "Yorkville", locales.get(2).getCity());
+		assertEquals("City was not correct.", "Glen Dale", locales.get(14).getCity());
 	}
 
 	@Test
 	public void testNearPoint() {
 		log.info("<<<<<<<<<<<<<<<<<  testNearPoint  >>>>>>>>>>>>>>>>>>>>");
 
-		//DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
+		// DB db = mongo.getDB(Properties.getString("mongodb.db.locs"));
 		DBObject index = new BasicDBObject();
 		index.put("coords", "2dsphere");
-		mongoOps.getCollection("locations").ensureIndex(index);
+		mongoOps.getCollection("locations").createIndex(index);
 
-		List<Location> locations = locationService.findByCityAndState(
-				"Wheeling", "WV");
+		List<Location> locations = locationService.findByCityAndState("Wheeling", "WV");
 
 		assertNotNull("locations[0] was null.", locations.get(0));
 
-		assertEquals("City was not correct.", "Wheeling", locations.get(0)
-				.getCity());
-		assertEquals("State was not correct.", "WV", locations.get(0)
-				.getState());
-		assertEquals("ZipCode was not correct.", "26003", locations.get(0)
-				.getZipCode());
+		assertEquals("City was not correct.", "Wheeling", locations.get(0).getCity());
+		assertEquals("State was not correct.", "WV", locations.get(0).getState());
+		assertEquals("ZipCode was not correct.", "26003", locations.get(0).getZipCode());
 
-		GeoResults<Location> results = locationService.findNearPoint(
-				locations.get(0), 5);
+		GeoResults<Location> results = locationService.findNearPoint(locations.get(0), 5);
 
 		for (GeoResult<Location> result : results) {
-			log.info(result.getContent().toString()
-					+ " - Distance = "
-					+ Math.round(10.0 * result.getDistance()
-							.getNormalizedValue()) / 10.0 + " miles");
+			log.info(result.getContent().toString() + " - Distance = "
+					+ Math.round(10.0 * result.getDistance().getNormalizedValue()) / 10.0 + " miles");
 		}
 
-		assertEquals("City was not correct.", "Yorkville", results.getContent()
-				.get(2).getContent().getCity());
-		assertEquals("City was not correct.", "Glen Dale", results.getContent()
-				.get(14).getContent().getCity());
+		assertEquals("City was not correct.", "Yorkville", results.getContent().get(2).getContent().getCity());
+		assertEquals("City was not correct.", "Glen Dale", results.getContent().get(14).getContent().getCity());
 	}
 
 	@After

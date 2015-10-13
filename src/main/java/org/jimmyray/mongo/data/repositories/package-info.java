@@ -4,5 +4,5 @@
  * This package contains local data repositories.
  */
 
-package org.jimmyray.mongo.data.repository;
+package org.jimmyray.mongo.data.repositories;
 

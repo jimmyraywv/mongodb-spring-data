@@ -40,7 +40,7 @@ public class GeoQueriesTest {
 	@Test
 	public void testStateQuery() {
 		DBCollection collection = mongoOps.getCollection("geos");
-		collection.ensureIndex("stateIndex");
+		collection.createIndex("stateIndex");
 
 		BasicDBObject query = new BasicDBObject("state", "MN");
 		BasicDBObject fields = new BasicDBObject();
@@ -61,7 +61,7 @@ public class GeoQueriesTest {
 	@Test
 	public void testCenterQuery() {
 		DBCollection collection = mongoOps.getCollection("zips");
-		collection.ensureIndex(new BasicDBObject("loc", "2d"), "locIndex");
+		collection.createIndex(new BasicDBObject("loc", "2d"), "locIndex");
 
 		BasicDBList coords = new BasicDBList();
 		coords.add(-92.823358);

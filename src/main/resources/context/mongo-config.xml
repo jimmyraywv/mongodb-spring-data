@@ -2,11 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
   http://www.springframework.org/schema/context 
-  http://www.springframework.org/schema/context/spring-context-3.1.xsd
+  http://www.springframework.org/schema/context/spring-context-4.0.xsd
   http://www.springframework.org/schema/data/mongo
-          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd">
 
 	<!-- ||||||||| auth profile ||||||||| -->
 	<beans profile="auth">
@@ -27,9 +27,8 @@
 
 		<bean id="mongoCreds"
 			class="org.springframework.data.authentication.UserCredentials">
-			<constructor-arg name="username" value="#{mongoURI.username}" />
-			<constructor-arg name="password"
-				value="#{new java.lang.String(mongoURI.password)}" />
+			<constructor-arg name="username" value="${mongodb.user}" />
+			<constructor-arg name="password" value="${mongodb.pwd}" />
 		</bean>
 	</beans>
 
@@ -40,14 +39,19 @@
 			<constructor-arg name="databaseName" value="${mongodb.db}" />
 		</bean>
 		<!-- Default bean name is 'mongo' -->
-		<mongo:mongo host="${mongodb.host}" port="${mongodb.port}" />
+		<!-- <mongo:mongo host="${mongodb.host}" port="${mongodb.port}" /> -->
+		<mongo:mongo-client id="mongo" replica-set="${mongodb.url}"
+			credentials="${mongodb.creds}">
+			<mongo:client-options write-concern="NORMAL"
+				connections-per-host="10" connect-timeout="30000" max-wait-time="10000" />
+		</mongo:mongo-client>
 
 		<context:annotation-config />
 	</beans>
 
 	<!-- ||||||||| convert profile ||||||||| -->
 	<beans profile="convert">
-		<mongo:db-factory dbname="${mongodb.db}" port="${mongodb.port}"/>
+		<mongo:db-factory dbname="${mongodb.db}" port="${mongodb.port}" />
 
 		<mongo:mapping-converter>
 			<mongo:custom-converters>
@@ -66,78 +70,6 @@
 		<context:annotation-config />
 	</beans>
 
-	<!-- ||||||||| hq profile ||||||||| -->
-	<beans profile="hq">
-		<!-- Default bean name is 'mongo' -->
-		<bean id="mongo" class="com.mongodb.Mongo">
-			<constructor-arg ref="mongoURI" />
-		</bean>
-
-		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-			<constructor-arg ref="mongo" />
-			<constructor-arg name="databaseName" value="${mongohq.db}" />
-			<constructor-arg name="userCredentials" ref="mongoCreds" />
-		</bean>
-
-		<bean id="mongoCreds"
-			class="org.springframework.data.authentication.UserCredentials">
-			<constructor-arg name="username" value="${mongohq.userName}" />
-			<constructor-arg name="password" value="${mongohq.pwd}" />
-		</bean>
-
-		<bean class="com.mongodb.MongoURI" id="mongoURI">
-			<constructor-arg value="${mongohq.uri}" />
-		</bean>
-	</beans>
-
-	<!-- ||||||||| hqcb profile ||||||||| -->
-	<beans profile="hqcb">
-		<!-- Default bean name is 'mongo' -->
-		<bean id="mongo" class="com.mongodb.Mongo">
-			<constructor-arg ref="mongoURI" />
-		</bean>
-
-		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-			<constructor-arg ref="mongo" />
-			<constructor-arg name="databaseName" value="${mongohq.cb.db}" />
-			<constructor-arg name="userCredentials" ref="mongoCreds" />
-		</bean>
-
-		<bean id="mongoCreds"
-			class="org.springframework.data.authentication.UserCredentials">
-			<constructor-arg name="username" value="${mongohq.cb.userName}" />
-			<constructor-arg name="password" value="${mongohq.cb.pwd}" />
-		</bean>
-
-		<bean class="com.mongodb.MongoURI" id="mongoURI">
-			<constructor-arg value="${mongohq.cb.uri}" />
-		</bean>
-	</beans>
-
-	<!-- ||||||||| lab profile ||||||||| -->
-	<beans profile="lab">
-		<!-- Default bean name is 'mongo' -->
-		<bean id="mongo" class="com.mongodb.Mongo">
-			<constructor-arg ref="mongoURI" />
-		</bean>
-
-		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-			<constructor-arg ref="mongo" />
-			<constructor-arg name="databaseName" value="${mongolab.db}" />
-			<constructor-arg name="userCredentials" ref="mongoCreds" />
-		</bean>
-
-		<bean id="mongoCreds"
-			class="org.springframework.data.authentication.UserCredentials">
-			<constructor-arg name="username" value="${mongolab.userName}" />
-			<constructor-arg name="password" value="${mongolab.pwd}" />
-		</bean>
-
-		<bean class="com.mongodb.MongoURI" id="mongoURI">
-			<constructor-arg value="${mongolab.uri}" />
-		</bean>
-	</beans>
-
 	<!-- ||||||||| location profile ||||||||| -->
 	<beans profile="location">
 		<!-- Default bean name is 'mongo' -->
@@ -148,10 +80,8 @@
 			<constructor-arg name="databaseName" value="${mongodb.db.locs}" />
 		</bean>
 
-		<mongo:repositories base-package="org.jimmyray.mongo.data.repository">
-			<mongo:repository id="locationRepository"
-				mongo-template-ref="mongoTemplate" />
-		</mongo:repositories>
+		<mongo:repositories base-package="org.jimmyray.mongo.data.repositories"
+			mongo-template-ref="mongoTemplate" />
 
 		<!-- To translate any MongoExceptions thrown in @Repository annotated classes -->
 		<context:annotation-config />
@@ -167,51 +97,17 @@
 			<constructor-arg name="databaseName" value="${mongodb.db.geo}" />
 		</bean>
 
-		<mongo:repositories base-package="org.jimmyray.mongo.data.repository">
-			<mongo:repository id="locationRepository"
-				mongo-template-ref="mongoTemplate" />
-		</mongo:repositories>
+		<mongo:repositories base-package="org.jimmyray.mongo.data.repositories"
+			mongo-template-ref="mongoTemplate" />
 
 		<!-- To translate any MongoExceptions thrown in @Repository annotated classes -->
 		<context:annotation-config />
 	</beans>
 
-	<!-- ||||||||| Object Rocket profile ||||||||| -->
-	<beans profile="objectRocket">
-		<!-- Default bean name is 'mongo' -->
-		<bean id="mongo" class="com.mongodb.Mongo">
-			<constructor-arg ref="mongoURI" />
-		</bean>
-
-		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-			<constructor-arg ref="mongo" />
-			<constructor-arg name="databaseName" value="${objectRocket.db}" />
-			<constructor-arg name="userCredentials" ref="mongoCreds" />
-		</bean>
-
-		<bean id="mongoCreds"
-			class="org.springframework.data.authentication.UserCredentials">
-			<constructor-arg name="username" value="${objectRocket.userName}" />
-			<constructor-arg name="password" value="${objectRocket.pwd}" />
-		</bean>
-
-		<bean class="com.mongodb.MongoURI" id="mongoURI">
-			<constructor-arg value="${objectRocket.uri}" />
-		</bean>
-	</beans>
-
 	<!-- ||||||||| common ||||||||| -->
 	<beans profile="auth,local,convert,hq,hqcb,lab,objectRocket">
-		<mongo:repositories base-package="org.jimmyray.mongo.data.repository">
-			<mongo:repository id="customerRepository"
-				mongo-template-ref="mongoTemplate" />
-			<mongo:repository id="customerAddressRepository"
-				mongo-template-ref="mongoTemplate" />
-			<mongo:repository id="employeeRepository"
-				mongo-template-ref="mongoTemplate" />
-			<mongo:repository id="jobDescriptionRepository"
-				mongo-template-ref="mongoTemplate" />
-		</mongo:repositories>
+		<mongo:repositories base-package="org.jimmyray.mongo.data.repositories"
+			mongo-template-ref="mongoTemplate" />
 
 		<bean id="gridfsDb" factory-bean="mongoTemplate" factory-method="getDb" />
 

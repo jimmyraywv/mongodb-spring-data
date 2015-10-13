@@ -54,7 +54,7 @@ public class FullTextSearchTest {
 		DBObject index = new BasicDBObject();
 		index.put(EmployeeProperties.TITLE, "text");
 		mongoOps.getCollection(EmployeeProperties.COLLECTION)
-				.ensureIndex(index);
+				.createIndex(index);
 
 		/*
 		 * if (!db.isAuthenticated()) { boolean auth = db.authenticate(

@@ -1,4 +1,4 @@
-package org.jimmyray.mongo.data.repository;
+package org.jimmyray.mongo.data.repositories;
 
 import java.util.List;
 

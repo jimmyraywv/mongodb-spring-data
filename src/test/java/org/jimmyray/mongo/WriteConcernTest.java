@@ -40,17 +40,6 @@ public class WriteConcernTest {
 	}
 
 	@Test
-	public void testWriteConcernNone() {
-		mongo = (Mongo) ctx.getBean("mongo");
-		mongo.setWriteConcern(WriteConcern.NONE);
-		long startTime = System.currentTimeMillis();
-		employeeService.saveEmployees(employees);
-		long endTime = System.currentTimeMillis();
-		long duration = endTime - startTime;
-		log.info("WriteConcernNone time: " + duration + "ms");
-	}
-
-	@Test
 	public void testWriteConcernNormal() {
 		mongo = (Mongo) ctx.getBean("mongo");
 		mongo.setWriteConcern(WriteConcern.NORMAL);

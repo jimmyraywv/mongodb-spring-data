@@ -21,7 +21,7 @@
 				<value>creds.properties</value>
 			</list>
 		</property>
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="false" />
 	</bean>
 
 	<import resource="mongo-config.xml" />

@@ -3,7 +3,7 @@ package org.jimmyray.mongo.services;
 import java.util.List;
 
 import org.jimmyray.mongo.data.model.CustomerAddress;
-import org.jimmyray.mongo.data.repository.CustomerAddressRepository;
+import org.jimmyray.mongo.data.repositories.CustomerAddressRepository;
 
 /**
  * Implementation of EmployeeService contract.

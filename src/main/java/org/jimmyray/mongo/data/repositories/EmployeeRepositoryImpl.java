@@ -1,6 +1,4 @@
-package org.jimmyray.mongo.data.repository;
-
-import org.jimmyray.mongo.data.repository.custom.EmployeeBulkImpl;
+package org.jimmyray.mongo.data.repositories;
 
 /**
  * The Class EmployeeRepositoryImpl is needed for custom repository setup. It

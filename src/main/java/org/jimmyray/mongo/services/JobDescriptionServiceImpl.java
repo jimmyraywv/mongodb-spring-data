@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.jimmyray.mongo.data.model.JobDescription;
-import org.jimmyray.mongo.data.repository.JobDescriptionRepository;
+import org.jimmyray.mongo.data.repositories.JobDescriptionRepository;
 
 /**
  * Implementation of JobDescriptionService contract.

@@ -3,7 +3,7 @@ package org.jimmyray.mongo.services;
 import java.util.List;
 
 import org.jimmyray.mongo.data.model.Customer;
-import org.jimmyray.mongo.data.repository.CustomerRepository;
+import org.jimmyray.mongo.data.repositories.CustomerRepository;
 
 import com.mongodb.DBCollection;
 

@@ -1,9 +1,8 @@
-package org.jimmyray.mongo.data.repository;
+package org.jimmyray.mongo.data.repositories;
 
 import java.util.List;
 
 import org.jimmyray.mongo.data.model.Customer;
-import org.jimmyray.mongo.data.repository.custom.RepositoryUtils;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

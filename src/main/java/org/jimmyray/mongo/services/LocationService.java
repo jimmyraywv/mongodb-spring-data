@@ -3,8 +3,8 @@ package org.jimmyray.mongo.services;
 import java.util.List;
 
 import org.jimmyray.mongo.data.model.Location;
-import org.springframework.data.mongodb.core.geo.Circle;
-import org.springframework.data.mongodb.core.geo.GeoResults;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.GeoResults;
 
 /**
  * LocationService interface defines location service contract.

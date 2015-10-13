@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.jimmyray.mongo.data.model.Employee;
-import org.jimmyray.mongo.data.repository.EmployeeRepository;
+import org.jimmyray.mongo.data.repositories.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

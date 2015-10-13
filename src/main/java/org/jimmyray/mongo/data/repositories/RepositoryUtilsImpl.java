@@ -1,4 +1,4 @@
-package org.jimmyray.mongo.data.repository.custom;
+package org.jimmyray.mongo.data.repositories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import com.mongodb.DBCursor;
  */
 public abstract class RepositoryUtilsImpl implements RepositoryUtils {
 
-	@Override
+	//@Override
 	public List<String> getCollectionJson(DBCollection collection) {
 
 		List<String> list = new ArrayList<String>();

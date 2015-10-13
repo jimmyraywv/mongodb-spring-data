@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jimmyray.mongo.data.model.Location;
-import org.jimmyray.mongo.data.repository.LocationRepository;
+import org.jimmyray.mongo.data.repositories.LocationRepository;
 import org.jimmyray.mongo.data.transformers.LocationTransformer;
 import org.jimmyray.mongo.framework.GeoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.geo.Circle;
-import org.springframework.data.mongodb.core.geo.Distance;
-import org.springframework.data.mongodb.core.geo.GeoResults;
-import org.springframework.data.mongodb.core.geo.Metrics;
-import org.springframework.data.mongodb.core.geo.Point;
 import org.springframework.data.mongodb.core.query.NearQuery;
 
 import com.mongodb.DB;
@@ -26,8 +26,7 @@ import com.mongodb.Mongo;
  * The Class LocationServiceImpl.
  */
 public class LocationServiceImpl implements LocationService {
-	private static Logger log = LoggerFactory
-			.getLogger(LocationServiceImpl.class);
+	private static Logger log = LoggerFactory.getLogger(LocationServiceImpl.class);
 
 	/** The location repository. */
 	private LocationRepository locationRepository;
@@ -147,9 +146,8 @@ public class LocationServiceImpl implements LocationService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.jimmyray.mongo.services.LocationService#findByZipCode(java.lang.String
-	 * )
+	 * @see org.jimmyray.mongo.services.LocationService#findByZipCode(java.lang.
+	 * String )
 	 */
 	@Override
 	public List<Location> findByZipCode(String zipCode) {
@@ -241,15 +239,13 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public List<Location> findByGeoWithin(Circle circle) {
-		return this.locationRepository.findByGeoWithin(circle.getCenter()
-				.getX(), circle.getCenter().getY(), circle.getRadius());
+		return this.locationRepository.findByGeoWithin(circle.getCenter().getX(), circle.getCenter().getY(),
+				circle.getRadius().getValue());
 	}
 
 	@Override
-	public List<Location> findByCityAndStateAndZipCode(String city,
-			String state, String zipCode) {
-		return this.locationRepository.findByCityAndStateAndZipCode(city,
-				state, zipCode);
+	public List<Location> findByCityAndStateAndZipCode(String city, String state, String zipCode) {
+		return this.locationRepository.findByCityAndStateAndZipCode(city, state, zipCode);
 	}
 
 	@Override
@@ -259,23 +255,19 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public List<Location> findNear(Location location, double distanceInMiles) {
-		return this.findNear(location.getLongitude(), location.getLatitude(),
-				GeoUtils.milesToMeters(distanceInMiles));
+		return this.findNear(location.getLongitude(), location.getLatitude(), GeoUtils.milesToMeters(distanceInMiles));
 	}
 
 	@Override
-	public GeoResults<Location> findNearPoint(Location location,
-			double distanceInMiles) {
+	public GeoResults<Location> findNearPoint(Location location, double distanceInMiles) {
 
 		Point point = new Point(location.getLongitude(), location.getLatitude());
 
-		NearQuery query = NearQuery.near(point)
-				.maxDistance(new Distance(distanceInMiles, Metrics.MILES))
+		NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInMiles, Metrics.MILES))
 				.in(Metrics.MILES);
 		// .distanceMultiplier(Metrics.MILES);
 
-		GeoResults<Location> results = this.mongoOps.geoNear(query,
-				Location.class);
+		GeoResults<Location> results = this.mongoOps.geoNear(query, Location.class);
 
 		return results;
 	}
