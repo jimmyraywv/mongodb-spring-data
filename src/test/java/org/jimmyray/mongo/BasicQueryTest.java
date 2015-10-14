@@ -46,6 +46,7 @@ public class BasicQueryTest {
 		ctx = new GenericXmlApplicationContext(
 				Properties.getString("springMongoConfig.path.configFile"));
 
+		//TODO need to fix bulk insert
 		EmployeeLoader.loadEmployees(ctx, true, 50000);
 	}
 

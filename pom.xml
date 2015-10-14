@@ -13,6 +13,7 @@
 		<test>org.jimmyray.mongo.ADummyTest</test>
 		<spring.version>3.2.5.RELEASE</spring.version>
 		<springdata.mongo.version>1.8.0.RELEASE</springdata.mongo.version>
+		<springdata.commons.version>1.11.0.RELEASE</springdata.commons.version>
 		<mongodb.java.version>3.0.4</mongodb.java.version>
 		<jackson.version>1.9.4</jackson.version>
 		<jersey.version>1.17.1</jersey.version>
@@ -39,6 +40,11 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>${springdata.mongo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+			<version>${springdata.commons.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

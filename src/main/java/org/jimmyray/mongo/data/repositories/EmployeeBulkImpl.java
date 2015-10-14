@@ -6,10 +6,12 @@ import java.util.List;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.data.model.properties.EmployeeProperties;
+import org.jimmyray.mongo.data.transformers.EmployeeTransformer;
 import org.jimmyray.mongo.framework.SpringBeanFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
@@ -34,24 +36,24 @@ public abstract class EmployeeBulkImpl implements EmployeeBulk {
 	 */
 	// @Override
 	public void bulkInsert(List<Employee> employees, int batchSize) {
-		MongoClient mongo = (MongoClient) SpringBeanFactory.getBean("mongo");
+		MongoClient mongo = (MongoClient) SpringBeanFactory.getBean("mongoClient");
 		MongoDatabase db = mongo.getDatabase((String) SpringBeanFactory.getBean("dbName"));
 
-		MongoCollection<Employee> collection = db.getCollection(EmployeeProperties.COLLECTION, Employee.class);
-		List<Employee> docs = new ArrayList<Employee>();
-		// EmployeeTransformer transformer = new EmployeeTransformer();
+		MongoCollection<DBObject> collection = db.getCollection(EmployeeProperties.COLLECTION, DBObject.class);
+		List<DBObject> docs = new ArrayList<DBObject>();
+		EmployeeTransformer transformer = new EmployeeTransformer();
 
 		int insertCounter = 0;
 		try {
 			for (Employee employee : employees) {
-				docs.add(employee);
+				docs.add((DBObject)transformer.transform(employee));
 				insertCounter++;
 
 				if (insertCounter == batchSize) {
 					collection.insertMany(docs);
 
 					insertCounter = 0;
-					docs = new ArrayList<Employee>();
+					docs = new ArrayList<DBObject>();
 				}
 			}
 

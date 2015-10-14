@@ -8,7 +8,7 @@
   http://www.springframework.org/schema/data/mongo
           http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd">
 
-	<!-- ||||||||| auth profile ||||||||| -->
+	<!-- ||||||||| default profile ||||||||| -->
 	<beans profile="auth">
 		<!-- Default bean name is 'mongo' -->
 		<bean class="com.mongodb.MongoURI" id="mongoURI">
@@ -17,6 +17,14 @@
 
 		<bean id="mongo" class="com.mongodb.Mongo">
 			<constructor-arg ref="mongoURI" />
+		</bean>
+		
+		<bean id="mongoClientUri" class="com.mongodb.MongoClientURI">
+			<constructor-arg name="uri" value="${mongodb.client.uri}" />
+		</bean>
+		
+		<bean id="mongoClient" class="com.mongodb.MongoClient">
+			<constructor-arg ref="mongoClientUri" />
 		</bean>
 
 		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
