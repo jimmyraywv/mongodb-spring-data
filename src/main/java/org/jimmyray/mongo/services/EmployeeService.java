@@ -1,10 +1,10 @@
 package org.jimmyray.mongo.services;
 
-import java.util.List;
-
 import org.jimmyray.mongo.data.model.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+
+import java.util.List;
 
 /**
  * EmployeeService interface defines employee service contract.
@@ -34,7 +34,7 @@ public interface EmployeeService {
 	
 	Employee findByEmployeeId(String employeeId);
 
-	List<Employee> queryByLastNameAndDepartment(String lastName, String deptName);
+	//List<Employee> queryByLastNameAndDepartment(String lastName, String deptName);
 
 	void bulkInsert(List<Employee> employees, int batchSize);
 

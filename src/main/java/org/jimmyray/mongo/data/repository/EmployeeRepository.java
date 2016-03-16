@@ -1,12 +1,10 @@
 package org.jimmyray.mongo.data.repository;
 
-import java.util.List;
-
 import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.data.repository.custom.EmployeeBulk;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+
+import java.util.List;
 
 /**
  * Spring Data MongoDB Repository for Employee objects. Methods are not
@@ -18,7 +16,9 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
  */
 // @RepositoryDefinition(domainClass = Employee.class, idClass = String.class)
 public interface EmployeeRepository extends MongoRepository<Employee, String>,
-		QueryDslPredicateExecutor<Employee>, EmployeeBulk {
+		EmployeeBulk {
+
+		//QueryDslPredicateExecutor<Employee>, EmployeeBulk {
 
 	List<Employee> findAll();
 
@@ -41,7 +41,7 @@ public interface EmployeeRepository extends MongoRepository<Employee, String>,
 	List<Employee> findByLastNameAndDepartmentName(String lastName,
 			String departmentName);
 
-	@Query("{lname:?0, dept.name:?1}")
-	List<Employee> queryByEmployeeLastNameAndDepartmentName(String lastName,
-			String deptName);
+	//@Query("{lname:?0, dept.name:?1}")
+	//List<Employee> queryByEmployeeLastNameAndDepartmentName(String lastName,
+			//String deptName);
 }

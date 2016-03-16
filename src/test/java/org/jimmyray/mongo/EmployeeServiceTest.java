@@ -1,10 +1,5 @@
 package org.jimmyray.mongo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.jimmyray.mongo.data.loaders.EmployeeLoader;
 import org.jimmyray.mongo.data.model.Employee;
 import org.jimmyray.mongo.services.EmployeeService;
@@ -16,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 //JVM Settings -Xmx512M -Dspring.profiles.active=local
@@ -66,10 +66,10 @@ public class EmployeeServiceTest {
 		employees = employeeService.findByGender("TEST");
 		assertTrue("Employees is not empty.", employees.isEmpty());
 
-		employees = employeeService.queryByLastNameAndDepartment("Chenney",
-				"Sales");
-		assertEquals("Employees list size is not correct.", 29,
-				employees.size());
+		//employees = employeeService.queryByLastNameAndDepartment("Chenney",
+		//		"Sales");
+		//assertEquals("Employees list size is not correct.", 29,
+		//		employees.size());
 
 		for (Employee employee : employees) {
 			log.info(employee.toString());

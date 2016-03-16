@@ -2,6 +2,11 @@
 *.class
 *.log*
 
+# IntelliJ IDEA
+.idea
+*.iml
+*.iws
+
 # Eclipse
 .settings
 .classpath
@@ -15,6 +20,6 @@ target
 .DS_Store
 
 # Security
-creds.properties
+#creds.properties
 /temp
 /.gitignore

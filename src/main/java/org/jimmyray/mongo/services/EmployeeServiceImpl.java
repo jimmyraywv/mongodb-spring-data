@@ -85,12 +85,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeRepository.findByEmployeeId(employeeId);
 	}
 
-	@Override
-	public List<Employee> queryByLastNameAndDepartment(String lastName,
-			String deptName) {
-		return employeeRepository.queryByEmployeeLastNameAndDepartmentName(
-				lastName, deptName);
-	}
+	//@Override
+	//public List<Employee> queryByLastNameAndDepartment(String lastName,
+	//		String deptName) {
+	//	return employeeRepository.queryByEmployeeLastNameAndDepartmentName(
+	//			lastName, deptName);
+	//}
 
 	@Override
 	public void deleteEmployee(Employee employee) {

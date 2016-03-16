@@ -1,11 +1,5 @@
 package org.jimmyray.mongo.data.loaders;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 import org.jimmyray.mongo.data.model.Address;
 import org.jimmyray.mongo.data.model.Department;
 import org.jimmyray.mongo.data.model.Employee;
@@ -17,6 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Loads small subset of employee data into MongoDB

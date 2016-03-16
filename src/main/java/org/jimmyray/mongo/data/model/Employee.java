@@ -1,8 +1,5 @@
 package org.jimmyray.mongo.data.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jimmyray.mongo.data.model.properties.EmployeeProperties;
 import org.jimmyray.mongo.framework.Strings;
@@ -11,7 +8,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.mysema.query.annotations.QueryEntity;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Employee model object with MongoDB meta-mapping annotations.
@@ -20,7 +18,7 @@ import com.mysema.query.annotations.QueryEntity;
  * @version 1.0
  */
 @JsonIgnoreProperties({"dirty"})
-@QueryEntity
+//@QueryEntity
 @Document(collection = EmployeeProperties.COLLECTION)
 public class Employee extends Person {
 	private static final long serialVersionUID = 6684888389354589761L;
