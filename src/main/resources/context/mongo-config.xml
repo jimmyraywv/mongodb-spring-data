@@ -9,9 +9,9 @@
           http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd">
 
 	<!-- ||||||||| default profile ||||||||| -->
-	<beans profile="auth">
+	<!-- <beans profile="auth"> -->
 		<!-- Default bean name is 'mongo' -->
-		<bean class="com.mongodb.MongoURI" id="mongoURI">
+		<!-- <bean class="com.mongodb.MongoURI" id="mongoURI">
 			<constructor-arg value="${mongodb.uri}" />
 		</bean>
 
@@ -38,7 +38,7 @@
 			<constructor-arg name="username" value="${mongodb.user}" />
 			<constructor-arg name="password" value="${mongodb.pwd}" />
 		</bean>
-	</beans>
+	</beans> -->
 
 	<!-- ||||||||| local profile ||||||||| -->
 	<beans profile="local">
@@ -48,8 +48,7 @@
 		</bean>
 		<!-- Default bean name is 'mongo' -->
 		<!-- <mongo:mongo host="${mongodb.host}" port="${mongodb.port}" /> -->
-		<mongo:mongo-client id="mongo" replica-set="${mongodb.url}"
-			credentials="${mongodb.creds}">
+		<mongo:mongo-client id="mongo" replica-set="${mongodb.url}" credentials="${mongodb.creds}">
 			<mongo:client-options write-concern="NORMAL"
 				connections-per-host="10" connect-timeout="30000" max-wait-time="10000" />
 		</mongo:mongo-client>
