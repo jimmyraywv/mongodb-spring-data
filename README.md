@@ -1,4 +1,2 @@
 mongodb-spring-data
 
-Test
-
